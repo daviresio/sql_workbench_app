@@ -19,9 +19,9 @@ class DatabaseInfoModel {
       schemas: json['schemas'] == null ? [] : json['schemas'],
       tables: json['tables'] == null ? [] : json['tables'],
       views: json['views'] == null ? [] : json['views'],
-      storeProcedures: json['store_producers'] == null ? [] : json['store_producers'],
+      storeProcedures: json['storeProducers'] == null ? [] : json['storeProducers'],
       functions: json['functions'] == null ? [] : json['functions'],
-      currentSchema: json['current_schema']
+      currentSchema: json['currentSchema']
     );
     return dat;
   }

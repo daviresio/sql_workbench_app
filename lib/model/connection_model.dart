@@ -22,7 +22,7 @@ class ConnectionModel {
     'port': port,
     'user': user,
     'password': password,
-    'database_name': databaseName
+    'databaseName': databaseName
   };
 
 }

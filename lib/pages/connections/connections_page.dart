@@ -8,6 +8,8 @@ import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../widgets/dialogs.dart';
+
 class ConnectionsPage extends StatefulWidget {
   @override
   _ConnectionsPageState createState() => _ConnectionsPageState();
@@ -40,14 +42,14 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                     onTap: () async {
                       try {
                         Dialogs.showLoadingDialog(context, _globalKey);
-                        DatabaseInfoModel result = await NewConnectionRepository().testConnection(item).whenComplete(() {
+                        DatabaseInfoModel result = await NewConnectionRepository().connectDB(item).whenComplete(() {
                           Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                         });
                         var dataBaseInfo = result.toTable();
                         await Database.instance.databaseInfoDao.edit(dataBaseInfo.copyWith(id: item.databaseInfoId));
                         Navigator.pushNamed(context, ConnectionHome.routeName, arguments: RouteArguments(id: item.id));
                       } catch(e) {
-                        errorDialog(e, true, context);
+                        Dialogs.errorDialog(e, true, context);
                       }
                     },
                     child: Card(

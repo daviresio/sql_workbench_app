@@ -1,4 +1,5 @@
 import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
+import 'package:dbclientapp/pages/connection_home/pages/query/query_store.dart';
 import 'package:dbclientapp/pages/connections/connections_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
@@ -15,6 +16,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<NewConnectionStore>(
           create: (_) => NewConnectionStore(),
+        ),
+        Provider<QueryStore>(
+          create: (_) => QueryStore(),
         ),
       ],
       child: MainApp(),

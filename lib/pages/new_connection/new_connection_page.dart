@@ -131,16 +131,18 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       onPressed: () async {
                         try {
                           Dialogs.showLoadingDialog(context, _globalKey);
-                          await NewConnectionRepository().testConnection(_controller.getConnection()).whenComplete(() {
+                          await NewConnectionRepository().connectDB(_controller.getConnection()).whenComplete(() {
+                            Future.delayed(Duration(seconds: 1));
                             Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                           });
                           _scaffoldKey.currentState.showSnackBar(
                             SnackBar(
-                              content: Text('Connection Succesfull!', style: TextStyle(color: Colors.white),),
+                              content: Text('Test Connection Succesfull!', style: TextStyle(color: Colors.white),),
                             ),
                           );
                         } catch(e) {
-                          errorDialog(e, true, context);
+                          print(e.toString());
+                          Dialogs.errorDialog(e, true, context);
                         }
 
                       },
@@ -151,7 +153,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       onPressed: () async {
                         try {
                           Dialogs.showLoadingDialog(context, _globalKey);
-                          DatabaseInfoModel result = await NewConnectionRepository().testConnection(_controller.getConnection()).whenComplete(() {
+                          DatabaseInfoModel result = await NewConnectionRepository().connectDB(_controller.getConnection()).whenComplete(() {
                             Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                           });
                           var dataBaseInfo = result.toTable();

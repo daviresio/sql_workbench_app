@@ -1,0 +1,2 @@
+const String TERM_CONNECTION = 'All queries are executed on your remote server, be careful as change are final and immediate. By proceedind you are agreeing that the app may run auto generated queries and cannot be held responsible for any data loss or misuse. ' +
+  'Passwords/SSH keys are kept in internal memory on the device and encrypted';

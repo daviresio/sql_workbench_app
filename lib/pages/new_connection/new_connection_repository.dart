@@ -6,16 +6,26 @@ import 'package:dbclientapp/network/dio_config.dart';
 
 class NewConnectionRepository {
 
-  Future testConnection(Connection connection) async {
+  Future connectDB(Connection connection) async {
     ConnectionModel connectionModel = ConnectionModel.fromTable(connection);
+
     try {
-      var result = await postRequest(endpoint: '/load-database-info/postgres', body: connectionModel.toJson());
+      var result = await postRequest(endpoint: '/postgres/database-info', body: connectionModel.toJson());
       return DatabaseInfoModel.fromJson(result.data);
     } catch(e) {
-      print(e);
       print(ErrorModel.fromJson(e.response.data).message);
       throw ErrorModel.fromJson(e.response.data).message;
     }
   }
 
 }
+
+
+
+//ConnectionModel connectionModel = ConnectionModel(
+//    host: 'postgres.clflap3onosk.us-east-2.rds.amazonaws.com',
+//    user: 'postgres',
+//    password: 'toqweb18',
+//    databaseName: 'ToqWeb',
+//    port: '5432'
+//);

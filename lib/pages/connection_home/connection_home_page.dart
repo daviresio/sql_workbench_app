@@ -30,20 +30,11 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
 
     if(args == null) return Container();
 
-    Database.instance.connectionDao.findConnectionWithInfo(1).listen((onValue) {
-      print(onValue.toString());
-    }).onError((onError) {
-      print(onError.toString());
-      throw onError;
-    });
-
     return StreamBuilder<ConnectionsWithInfo>(
         stream: Database.instance.connectionDao.findConnectionWithInfo(1),
         builder: (context, snapshot) {
 
           if(!snapshot.hasData) return Container();
-
-          print(snapshot.data.toString());
 
           return Scaffold(
             appBar: AppBar(
@@ -69,6 +60,7 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
                 ),
             ),
             body: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: <Widget>[
                 InfoDatabasePage(),

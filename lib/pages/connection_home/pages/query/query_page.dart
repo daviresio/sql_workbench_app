@@ -16,12 +16,34 @@ class QueryPage extends StatefulWidget {
 class _QueryPageState extends State<QueryPage> {
 
   final GlobalKey<State> _globalKey = GlobalKey<State>();
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollControllerListener);
+    super.initState();
+
+  }
+
+  _scrollControllerListener() {
+//    print(_scrollController.position);
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final QueryStore _controller = Provider.of<QueryStore>(context);
 
+    _scrollToTop() {
+      _scrollController.animateTo(0.0, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+      _controller.setOnTop(true);
+    }
+
+    _scrollToBottom() {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+      _controller.setOnTop(false);
+    }
 
     _getRows() {
       var items = _controller.rows.map((row) {
@@ -31,8 +53,10 @@ class _QueryPageState extends State<QueryPage> {
       return List<DataRow>.from(items);
     }
 
+
     return Scaffold(
       body: ListView(
+        controller: _scrollController,
         shrinkWrap: true,
         children: <Widget>[
           Container(
@@ -52,7 +76,7 @@ class _QueryPageState extends State<QueryPage> {
                         suffix: GestureDetector(
                           child: Icon(Icons.close),
                           onTap: () {
-
+                                _controller.query = '';
                           },
                         ),
                       ),
@@ -79,9 +103,14 @@ class _QueryPageState extends State<QueryPage> {
 
                             await _controller.fetchQuery(query).whenComplete(() {
                               Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-                            });
 
-                            } catch(e) {
+                              FocusScope.of(context).requestFocus(new FocusNode());
+
+                              Future.delayed(Duration(seconds: 1)).then((_) {
+                                _scrollToBottom();
+                              });
+                            });
+                          } catch(e) {
                             print(e);
 //                            Dialogs.errorDialog(e, true, context);
                           }
@@ -96,19 +125,59 @@ class _QueryPageState extends State<QueryPage> {
           Observer(
             builder: (_) {
               if(_controller.columns.length == 0) return Container();
+              return Stack(
+                children: <Widget>[
 
-              return Container(
-                height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: _controller.columns.map((value) => DataColumn(label: Text(value))).toList(),
-                      rows: _getRows(),
+                  Container(
+                    height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight,
+//                    color: Colors.red,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - 40,
+//                      color: Colors.green,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            columns: _controller.columns.map((value) => DataColumn(label: Text(value))).toList(),
+                            rows: _getRows(),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    top: 10,
+                    left: (MediaQuery.of(context).size.width / 2) - 20.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 3.0,
+                          ),
+                        ],
+                      ),
+                      child: Observer(
+                        builder: (_) => IconButton(
+                          icon: _controller.onTop ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
+                          onPressed: () {
+                            if(_controller.onTop) {
+                              _scrollToBottom();
+                            } else {
+                              _scrollToTop();
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           )
@@ -116,5 +185,6 @@ class _QueryPageState extends State<QueryPage> {
       ),
     );
   }
+
 
 }

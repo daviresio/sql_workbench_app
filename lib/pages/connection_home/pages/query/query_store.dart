@@ -33,4 +33,13 @@ abstract class _QueryStore with Store {
 
   }
 
+
+  @observable
+  bool onTop = true;
+
+  @action
+  setOnTop(value) {
+    onTop = value;
+  }
+
 }

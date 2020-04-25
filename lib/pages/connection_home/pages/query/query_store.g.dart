@@ -60,6 +60,23 @@ mixin _$QueryStore on _QueryStore, Store {
     }, _$rowsAtom, name: '${_$rowsAtom.name}_set');
   }
 
+  final _$onTopAtom = Atom(name: '_QueryStore.onTop');
+
+  @override
+  bool get onTop {
+    _$onTopAtom.context.enforceReadPolicy(_$onTopAtom);
+    _$onTopAtom.reportObserved();
+    return super.onTop;
+  }
+
+  @override
+  set onTop(bool value) {
+    _$onTopAtom.context.conditionallyRunInAction(() {
+      super.onTop = value;
+      _$onTopAtom.reportChanged();
+    }, _$onTopAtom, name: '${_$onTopAtom.name}_set');
+  }
+
   final _$_QueryStoreActionController = ActionController(name: '_QueryStore');
 
   @override
@@ -73,9 +90,19 @@ mixin _$QueryStore on _QueryStore, Store {
   }
 
   @override
+  dynamic setOnTop(dynamic value) {
+    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    try {
+      return super.setOnTop(value);
+    } finally {
+      _$_QueryStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'query: ${query.toString()},columns: ${columns.toString()},rows: ${rows.toString()}';
+        'query: ${query.toString()},columns: ${columns.toString()},rows: ${rows.toString()},onTop: ${onTop.toString()}';
     return '{$string}';
   }
 }

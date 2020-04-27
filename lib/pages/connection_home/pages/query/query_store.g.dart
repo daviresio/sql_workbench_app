@@ -9,21 +9,21 @@ part of 'query_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$QueryStore on _QueryStore, Store {
-  final _$queryAtom = Atom(name: '_QueryStore.query');
+  final _$querySavedAtom = Atom(name: '_QueryStore.querySaved');
 
   @override
-  String get query {
-    _$queryAtom.context.enforceReadPolicy(_$queryAtom);
-    _$queryAtom.reportObserved();
-    return super.query;
+  dynamic get querySaved {
+    _$querySavedAtom.context.enforceReadPolicy(_$querySavedAtom);
+    _$querySavedAtom.reportObserved();
+    return super.querySaved;
   }
 
   @override
-  set query(String value) {
-    _$queryAtom.context.conditionallyRunInAction(() {
-      super.query = value;
-      _$queryAtom.reportChanged();
-    }, _$queryAtom, name: '${_$queryAtom.name}_set');
+  set querySaved(dynamic value) {
+    _$querySavedAtom.context.conditionallyRunInAction(() {
+      super.querySaved = value;
+      _$querySavedAtom.reportChanged();
+    }, _$querySavedAtom, name: '${_$querySavedAtom.name}_set');
   }
 
   final _$columnsAtom = Atom(name: '_QueryStore.columns');
@@ -102,7 +102,7 @@ mixin _$QueryStore on _QueryStore, Store {
   @override
   String toString() {
     final string =
-        'query: ${query.toString()},columns: ${columns.toString()},rows: ${rows.toString()},onTop: ${onTop.toString()}';
+        'querySaved: ${querySaved.toString()},columns: ${columns.toString()},rows: ${rows.toString()},onTop: ${onTop.toString()}';
     return '{$string}';
   }
 }

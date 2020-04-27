@@ -121,4 +121,8 @@ abstract class _NewConnectionStore with Store {
     return connection;
   }
 
+  void loadData(int id) {
+    Database.instance.connectionDao.find(id).then((onValue) => initForm(onValue));
+  }
+
 }

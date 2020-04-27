@@ -1,3 +1,4 @@
+import 'package:dbclientapp/database/dao/query_saved_dao.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/connection_model.dart';
 import 'package:dbclientapp/model/query_model.dart';
@@ -9,6 +10,12 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class QueryPage extends StatefulWidget {
+
+  final int databaseInfoId;
+  final int connectionId;
+
+  const QueryPage({Key key, this.databaseInfoId, this.connectionId}) : super(key: key);
+
   @override
   _QueryPageState createState() => _QueryPageState();
 }
@@ -16,7 +23,10 @@ class QueryPage extends StatefulWidget {
 class _QueryPageState extends State<QueryPage> {
 
   final GlobalKey<State> _globalKey = GlobalKey<State>();
+  final QuerySavedDao _querySavedDao = Database.instance.querySavedDao;
+
   ScrollController _scrollController;
+  TextEditingController _queryEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -53,6 +63,16 @@ class _QueryPageState extends State<QueryPage> {
       return List<DataRow>.from(items);
     }
 
+    _saveQuery(QuerySaved querySaved) async {
+      if(querySaved.id != null && querySaved.id > 0) {
+        var result = await _querySavedDao.edit(querySaved);
+        _controller.setQuery(_controller.querySaved.copyWith(id: result));
+      } else {
+        var result = await _querySavedDao.add(querySaved);
+        print(result);
+        print(result.toString());
+      }
+    }
 
     return Scaffold(
       body: ListView(
@@ -69,14 +89,16 @@ class _QueryPageState extends State<QueryPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
                     child: TextFormField(
-                      initialValue: _controller.query,
+                      initialValue: _controller.querySaved.query,
                       onChanged: _controller.setQuery,
+//                      controller: _queryEditingController,
                       decoration: InputDecoration(
                         labelText: 'Query',
                         suffix: GestureDetector(
                           child: Icon(Icons.close),
                           onTap: () {
-                                _controller.query = '';
+                            _controller.setQuery('');
+//                            WidgetsBinding.instance.addPostFrameCallback((_) => _queryEditingController.clear());
                           },
                         ),
                       ),
@@ -88,7 +110,7 @@ class _QueryPageState extends State<QueryPage> {
                       FlatButton(
                         child: Text('SAVE'),
                         onPressed: () {
-
+                          _saveQuery(_controller.querySaved.copyWith(saved: true, databaseInfoId: widget.databaseInfoId));
                         },
                       ),
                       FlatButton(
@@ -97,22 +119,18 @@ class _QueryPageState extends State<QueryPage> {
                           try {
                             Dialogs.showLoadingDialog(context, _globalKey);
                             QueryModel query = QueryModel();
-                            var connection =  await Database.instance.connectionDao.find(1);
+                            var connection =  await Database.instance.connectionDao.find(widget.connectionId);
                             query.connection = ConnectionModel.fromTable(connection);
-                            query.query = _controller.query;
+                            query.query = _controller.querySaved.query;
 
                             await _controller.fetchQuery(query).whenComplete(() {
                               Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-
                               FocusScope.of(context).requestFocus(new FocusNode());
-
-                              Future.delayed(Duration(seconds: 1)).then((_) {
-                                _scrollToBottom();
-                              });
+                              _scrollToBottom();
+                              _saveQuery(QuerySaved(query: _controller.querySaved.query, databaseInfoId: widget.databaseInfoId));
                             });
                           } catch(e) {
-                            print(e);
-//                            Dialogs.errorDialog(e, true, context);
+                            Dialogs.errorDialog(e, true, context);
                           }
                         },
                       ),
@@ -126,25 +144,20 @@ class _QueryPageState extends State<QueryPage> {
             builder: (_) {
               if(_controller.columns.length == 0) return Container();
               return Stack(
+                alignment: Alignment.bottomCenter,
                 children: <Widget>[
-
                   Container(
                     height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight,
-//                    color: Colors.red,
                   ),
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - 40,
-//                      color: Colors.green,
+                  Container(
+                    height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - 40,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: DataTable(
-                            columns: _controller.columns.map((value) => DataColumn(label: Text(value))).toList(),
-                            rows: _getRows(),
-                          ),
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: _controller.columns.map((value) => DataColumn(label: Text(value))).toList(),
+                          rows: _getRows(),
                         ),
                       ),
                     ),

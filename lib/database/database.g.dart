@@ -1062,6 +1062,368 @@ class $DatabaseInfosTable extends DatabaseInfos
   }
 }
 
+class QuerySaved extends DataClass implements Insertable<QuerySaved> {
+  final int id;
+  final String query;
+  final bool saved;
+  final int databaseInfoId;
+  final DateTime lastExecution;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  QuerySaved(
+      {this.id,
+      this.query,
+      this.saved,
+      this.databaseInfoId,
+      this.lastExecution,
+      this.createdAt,
+      this.updatedAt});
+  factory QuerySaved.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    return QuerySaved(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      query:
+          stringType.mapFromDatabaseResponse(data['${effectivePrefix}query']),
+      saved: boolType.mapFromDatabaseResponse(data['${effectivePrefix}saved']),
+      databaseInfoId: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}database_info_id']),
+      lastExecution: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}last_execution']),
+      createdAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at']),
+      updatedAt: dateTimeType
+          .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
+    );
+  }
+  factory QuerySaved.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return QuerySaved(
+      id: serializer.fromJson<int>(json['id']),
+      query: serializer.fromJson<String>(json['query']),
+      saved: serializer.fromJson<bool>(json['saved']),
+      databaseInfoId: serializer.fromJson<int>(json['databaseInfoId']),
+      lastExecution: serializer.fromJson<DateTime>(json['lastExecution']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'query': serializer.toJson<String>(query),
+      'saved': serializer.toJson<bool>(saved),
+      'databaseInfoId': serializer.toJson<int>(databaseInfoId),
+      'lastExecution': serializer.toJson<DateTime>(lastExecution),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  @override
+  QuerySavedsCompanion createCompanion(bool nullToAbsent) {
+    return QuerySavedsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      query:
+          query == null && nullToAbsent ? const Value.absent() : Value(query),
+      saved:
+          saved == null && nullToAbsent ? const Value.absent() : Value(saved),
+      databaseInfoId: databaseInfoId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(databaseInfoId),
+      lastExecution: lastExecution == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastExecution),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
+  QuerySaved copyWith(
+          {int id,
+          String query,
+          bool saved,
+          int databaseInfoId,
+          DateTime lastExecution,
+          DateTime createdAt,
+          DateTime updatedAt}) =>
+      QuerySaved(
+        id: id ?? this.id,
+        query: query ?? this.query,
+        saved: saved ?? this.saved,
+        databaseInfoId: databaseInfoId ?? this.databaseInfoId,
+        lastExecution: lastExecution ?? this.lastExecution,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('QuerySaved(')
+          ..write('id: $id, ')
+          ..write('query: $query, ')
+          ..write('saved: $saved, ')
+          ..write('databaseInfoId: $databaseInfoId, ')
+          ..write('lastExecution: $lastExecution, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          query.hashCode,
+          $mrjc(
+              saved.hashCode,
+              $mrjc(
+                  databaseInfoId.hashCode,
+                  $mrjc(lastExecution.hashCode,
+                      $mrjc(createdAt.hashCode, updatedAt.hashCode)))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is QuerySaved &&
+          other.id == this.id &&
+          other.query == this.query &&
+          other.saved == this.saved &&
+          other.databaseInfoId == this.databaseInfoId &&
+          other.lastExecution == this.lastExecution &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class QuerySavedsCompanion extends UpdateCompanion<QuerySaved> {
+  final Value<int> id;
+  final Value<String> query;
+  final Value<bool> saved;
+  final Value<int> databaseInfoId;
+  final Value<DateTime> lastExecution;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const QuerySavedsCompanion({
+    this.id = const Value.absent(),
+    this.query = const Value.absent(),
+    this.saved = const Value.absent(),
+    this.databaseInfoId = const Value.absent(),
+    this.lastExecution = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  QuerySavedsCompanion.insert({
+    this.id = const Value.absent(),
+    this.query = const Value.absent(),
+    this.saved = const Value.absent(),
+    this.databaseInfoId = const Value.absent(),
+    this.lastExecution = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  QuerySavedsCompanion copyWith(
+      {Value<int> id,
+      Value<String> query,
+      Value<bool> saved,
+      Value<int> databaseInfoId,
+      Value<DateTime> lastExecution,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt}) {
+    return QuerySavedsCompanion(
+      id: id ?? this.id,
+      query: query ?? this.query,
+      saved: saved ?? this.saved,
+      databaseInfoId: databaseInfoId ?? this.databaseInfoId,
+      lastExecution: lastExecution ?? this.lastExecution,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+}
+
+class $QuerySavedsTable extends QuerySaveds
+    with TableInfo<$QuerySavedsTable, QuerySaved> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $QuerySavedsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn('id', $tableName, true,
+        hasAutoIncrement: true, declaredAsPrimaryKey: true);
+  }
+
+  final VerificationMeta _queryMeta = const VerificationMeta('query');
+  GeneratedTextColumn _query;
+  @override
+  GeneratedTextColumn get query => _query ??= _constructQuery();
+  GeneratedTextColumn _constructQuery() {
+    return GeneratedTextColumn('query', $tableName, true,
+        defaultValue: Constant(''));
+  }
+
+  final VerificationMeta _savedMeta = const VerificationMeta('saved');
+  GeneratedBoolColumn _saved;
+  @override
+  GeneratedBoolColumn get saved => _saved ??= _constructSaved();
+  GeneratedBoolColumn _constructSaved() {
+    return GeneratedBoolColumn('saved', $tableName, true,
+        defaultValue: Constant(false));
+  }
+
+  final VerificationMeta _databaseInfoIdMeta =
+      const VerificationMeta('databaseInfoId');
+  GeneratedIntColumn _databaseInfoId;
+  @override
+  GeneratedIntColumn get databaseInfoId =>
+      _databaseInfoId ??= _constructDatabaseInfoId();
+  GeneratedIntColumn _constructDatabaseInfoId() {
+    return GeneratedIntColumn(
+      'database_info_id',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _lastExecutionMeta =
+      const VerificationMeta('lastExecution');
+  GeneratedDateTimeColumn _lastExecution;
+  @override
+  GeneratedDateTimeColumn get lastExecution =>
+      _lastExecution ??= _constructLastExecution();
+  GeneratedDateTimeColumn _constructLastExecution() {
+    return GeneratedDateTimeColumn(
+      'last_execution',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  GeneratedDateTimeColumn _createdAt;
+  @override
+  GeneratedDateTimeColumn get createdAt => _createdAt ??= _constructCreatedAt();
+  GeneratedDateTimeColumn _constructCreatedAt() {
+    return GeneratedDateTimeColumn(
+      'created_at',
+      $tableName,
+      true,
+    );
+  }
+
+  final VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
+  GeneratedDateTimeColumn _updatedAt;
+  @override
+  GeneratedDateTimeColumn get updatedAt => _updatedAt ??= _constructUpdatedAt();
+  GeneratedDateTimeColumn _constructUpdatedAt() {
+    return GeneratedDateTimeColumn(
+      'updated_at',
+      $tableName,
+      true,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, query, saved, databaseInfoId, lastExecution, createdAt, updatedAt];
+  @override
+  $QuerySavedsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'query_saveds';
+  @override
+  final String actualTableName = 'query_saveds';
+  @override
+  VerificationContext validateIntegrity(QuerySavedsCompanion d,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    if (d.id.present) {
+      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    }
+    if (d.query.present) {
+      context.handle(
+          _queryMeta, query.isAcceptableValue(d.query.value, _queryMeta));
+    }
+    if (d.saved.present) {
+      context.handle(
+          _savedMeta, saved.isAcceptableValue(d.saved.value, _savedMeta));
+    }
+    if (d.databaseInfoId.present) {
+      context.handle(
+          _databaseInfoIdMeta,
+          databaseInfoId.isAcceptableValue(
+              d.databaseInfoId.value, _databaseInfoIdMeta));
+    }
+    if (d.lastExecution.present) {
+      context.handle(
+          _lastExecutionMeta,
+          lastExecution.isAcceptableValue(
+              d.lastExecution.value, _lastExecutionMeta));
+    }
+    if (d.createdAt.present) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+    }
+    if (d.updatedAt.present) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  QuerySaved map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return QuerySaved.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  Map<String, Variable> entityToSql(QuerySavedsCompanion d) {
+    final map = <String, Variable>{};
+    if (d.id.present) {
+      map['id'] = Variable<int, IntType>(d.id.value);
+    }
+    if (d.query.present) {
+      map['query'] = Variable<String, StringType>(d.query.value);
+    }
+    if (d.saved.present) {
+      map['saved'] = Variable<bool, BoolType>(d.saved.value);
+    }
+    if (d.databaseInfoId.present) {
+      map['database_info_id'] = Variable<int, IntType>(d.databaseInfoId.value);
+    }
+    if (d.lastExecution.present) {
+      map['last_execution'] =
+          Variable<DateTime, DateTimeType>(d.lastExecution.value);
+    }
+    if (d.createdAt.present) {
+      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
+    }
+    if (d.updatedAt.present) {
+      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  $QuerySavedsTable createAlias(String alias) {
+    return $QuerySavedsTable(_db, alias);
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ConnectionsTable _connections;
@@ -1069,15 +1431,20 @@ abstract class _$Database extends GeneratedDatabase {
   $DatabaseInfosTable _databaseInfos;
   $DatabaseInfosTable get databaseInfos =>
       _databaseInfos ??= $DatabaseInfosTable(this);
+  $QuerySavedsTable _querySaveds;
+  $QuerySavedsTable get querySaveds => _querySaveds ??= $QuerySavedsTable(this);
   ConnectionDao _connectionDao;
   ConnectionDao get connectionDao =>
       _connectionDao ??= ConnectionDao(this as Database);
   DatabaseInfoDao _databaseInfoDao;
   DatabaseInfoDao get databaseInfoDao =>
       _databaseInfoDao ??= DatabaseInfoDao(this as Database);
+  QuerySavedDao _querySavedDao;
+  QuerySavedDao get querySavedDao =>
+      _querySavedDao ??= QuerySavedDao(this as Database);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [connections, databaseInfos];
+      [connections, databaseInfos, querySaveds];
 }

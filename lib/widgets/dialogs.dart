@@ -11,7 +11,7 @@ class Dialogs {
           onWillPop: () async => false,
           child: SimpleDialog(
             key: key,
-            backgroundColor: Colors.black54,
+            backgroundColor: Colors.white,
             children: <Widget>[
               Center(
                 child: Column(
@@ -32,7 +32,7 @@ class Dialogs {
   static Future errorDialog(String error, bool visible, BuildContext context) {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: Text('Text'),
+        title: Text('Erro'),
         content: Text(error),
         actions: <Widget>[
           FlatButton(onPressed: () => Navigator.of(context).pop(),

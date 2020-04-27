@@ -1,7 +1,9 @@
+import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/database_info_model.dart';
 import 'package:dbclientapp/model/route_arguments.dart';
 import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
+import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
@@ -55,45 +57,67 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                     child: Card(
                       child: ListTile(
                         contentPadding: EdgeInsets.only(left: 16.0),
-                        title: Column(
+                        title: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            Text(item.name, style: TextStyle(fontWeight: FontWeight.bold),),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.view_day),
-                                Flexible(child: Text(item.host)),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.view_day),
-                                Text(item.databaseName),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Icon(Icons.view_day),
-                                Text(item.user),
-                              ],
+                            Image.asset('assets/images/${databaseImages[item.vendor]}', width: 100.0,),
+                            SizedBox(width: 12.0,),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Text(item.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.black54),),
+                                  SizedBox(height: 8.0,),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(IconsForMyApp.link_outline, size: 15.0,),
+                                      SizedBox(width: 8.0,),
+                                      Expanded(child: Text(item.host, overflow: TextOverflow.fade, softWrap: false, maxLines: 1,)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8.0,),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(IconsForMyApp.database, size: 15.0,),
+                                      SizedBox(width: 8.0,),
+                                      Text(item.databaseName),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8.0,),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(IconsForMyApp.user, size: 15.0,),
+                                      SizedBox(width: 8.0,),
+                                      Text(item.user),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                         trailing: PopupMenuButton(
-                          onSelected: (value) {},
+                          onSelected: (value) {
+                            switch(value) {
+                              case 'EDIT':
+                                Navigator.pushNamed(context, NewConnectionPage.routeName, arguments: RouteArguments(id: item.id));
+                                break;
+                            }
+                          },
                           itemBuilder: (context) {
                             return [
                               PopupMenuItem(
-                                value: 'edit',
+                                value: 'EDIT',
                                 child: Text('Edit'),
                               ),
                               PopupMenuItem(
-                                value: 'copy',
+                                value: 'COPY',
                                 child: Text('Copy'),
                               ),
                               PopupMenuItem(
-                                value: 'delete',
+                                value: 'DELETE',
                                 child: Text('Delete'),
                               ),
                             ];

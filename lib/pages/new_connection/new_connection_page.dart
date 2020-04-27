@@ -1,5 +1,8 @@
+import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/database_info_model.dart';
+import 'package:dbclientapp/model/route_arguments.dart';
+import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
@@ -23,6 +26,11 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
   Widget build(BuildContext context) {
     final NewConnectionStore _controller = Provider.of<NewConnectionStore>(context);
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final RouteArguments args = ModalRoute.of(context).settings.arguments;
+
+    if(args != null) {
+      _controller.loadData(args.id);
+    }
 
     return Scaffold(
         key: _scaffoldKey,
@@ -38,10 +46,13 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ContainerFormItem(
-                      child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Name'),
-                        initialValue: _controller.name,
-                        onChanged: _controller.setName,
+                      child: Observer(
+                        builder: (_) => TextFormField(
+                          decoration: TextFieldFormItemDecoraction('Name', IconsForMyApp.subtitles),
+                          initialValue: _controller.name,
+                          onChanged: _controller.setName,
+
+                        ),
                       ),
                     ),
                     SizedBox(height: 20.0,),
@@ -51,7 +62,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                             hint: Text('Vendor'),
                             isExpanded: true,
                             value: _controller.vendor,
-                            items: <String>['Postgresql'].map((String value) {
+                            items: databaseImages.keys.map((String value) {
                               return DropdownMenuItem(
                                 value: value,
                                 child: Text(value),
@@ -62,7 +73,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Hostname'),
+                        decoration: TextFieldFormItemDecoraction('Hostname', IconsForMyApp.link_outline),
                         initialValue: _controller.host,
                         onChanged: _controller.setHost,
                       ),
@@ -70,15 +81,16 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Port'),
+                        decoration: TextFieldFormItemDecoraction('Port', IconsForMyApp.export_outline),
                         initialValue: _controller.port,
                         onChanged: _controller.setPort,
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Database'),
+                        decoration: TextFieldFormItemDecoraction('Database', IconsForMyApp.database),
                         initialValue: _controller.databaseName,
                         onChanged: _controller.setDatabaseName,
                       ),
@@ -86,7 +98,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('User'),
+                        decoration: TextFieldFormItemDecoraction('User', IconsForMyApp.user),
                         initialValue: _controller.user,
                         onChanged: _controller.setUser,
                       ),
@@ -94,9 +106,11 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Password'),
+                        decoration: TextFieldFormItemDecoraction('Password', IconsForMyApp.key),
                         initialValue: _controller.password,
                         onChanged: _controller.setPassword,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: true,
                       ),
                     ),
                     SizedBox(height: 20.0,),
@@ -161,6 +175,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                           await Database.instance.connectionDao.add(_controller.getConnection().copyWith(databaseInfoId: databaseInfoId, schema: result.currentSchema));
                           Navigator.of(context).pop();
                         } catch(e) {
+                          print(e);
                           Dialogs.errorDialog(e, true, context);
                         }
                       },
@@ -174,11 +189,10 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
   }
 }
 
-InputDecoration TextFieldFormItemDecoraction(String label) {
+InputDecoration TextFieldFormItemDecoraction(String label, IconData icon) {
   return InputDecoration(
     labelText: label,
-//    prefixIcon: Icon(Icons.text_format),
-    border: OutlineInputBorder(),
+    prefixIcon: Icon(icon, size: 20.0,),
   );
 }
 

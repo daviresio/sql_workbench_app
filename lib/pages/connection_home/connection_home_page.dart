@@ -1,12 +1,13 @@
-import 'package:dbclientapp/database/database.dart';
-import 'package:dbclientapp/database/model/ConnectionWithInfo.dart';
+import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/model/route_arguments.dart';
 import 'package:dbclientapp/pages/connection_home/pages/favorite/favorite_page.dart';
 import 'package:dbclientapp/pages/connection_home/pages/history/history_page.dart';
 import 'package:dbclientapp/pages/connection_home/pages/info_database/info_database_page.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/query_page.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import './connection_home_store.dart';
 
 class ConnectionHome extends StatefulWidget {
 
@@ -20,21 +21,21 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
 
-    final RouteArguments args = ModalRoute.of(context).settings.arguments;
-
     final _tabController = TabController(
       length: 4,
       initialIndex: 0,
       vsync: this,
     );
 
+    final RouteArguments args = ModalRoute.of(context).settings.arguments;
     if(args == null) return Container();
 
-    return StreamBuilder<ConnectionsWithInfo>(
-        stream: Database.instance.connectionDao.findConnectionWithInfo(1),
-        builder: (context, snapshot) {
+    ConnectionHomeStore _controller = Provider.of<ConnectionHomeStore>(context);
+    _controller.setConnectionsWithInfo(args.id);
 
-          if(!snapshot.hasData) return Container();
+    return Observer(
+        builder: (_) {
+          if (_controller.connectionsWithInfo == null) return Container();
 
           return Scaffold(
             appBar: AppBar(
@@ -42,31 +43,34 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(snapshot.data.connection.databaseName),
-                  Text('${snapshot.data.connection.databaseName} - ${snapshot.data.connection.schema}')
+                  Text(_controller.connectionsWithInfo.connection
+                      .databaseName),
+                  Text('${_controller.connectionsWithInfo.connection
+                      .databaseName} - ${_controller.connectionsWithInfo
+                      .connection.schema}')
                 ],
               ),
-                bottom: TabBar(
-                  isScrollable: true,
-                  controller: _tabController,
-                  tabs: choicesTabs.map((ChoiceTab choiceTab) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Tab(
-                        icon: Icon(choiceTab.icon),
-                      ),
-                    );
-                  }).toList(),
-                ),
+              bottom: TabBar(
+                isScrollable: true,
+                controller: _tabController,
+                tabs: choicesTabs.map((ChoiceTab choiceTab) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Tab(
+                      icon: Icon(choiceTab.icon),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
             body: TabBarView(
               physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: <Widget>[
-                InfoDatabasePage(),
-                QueryPage(),
-                FavoritePage(),
-                HistoryPage(),
+                InfoDatabasePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
+                QueryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
+                FavoritePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
+                HistoryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
               ],
             ),
           );
@@ -85,8 +89,8 @@ class ChoiceTab {
 
 
 const List<ChoiceTab> choicesTabs = const <ChoiceTab> [
-  const ChoiceTab(title: 'INFO', icon: FontAwesomeIcons.table),
-  const ChoiceTab(title: 'QUERY', icon: FontAwesomeIcons.database),
-  const ChoiceTab(title: 'FAVORITE', icon: FontAwesomeIcons.star),
-  const ChoiceTab(title: 'HISTORY', icon: FontAwesomeIcons.clock),
+  const ChoiceTab(title: 'INFO', icon: IconsForMyApp.table),
+  const ChoiceTab(title: 'QUERY', icon: IconsForMyApp.database),
+  const ChoiceTab(title: 'FAVORITE', icon: IconsForMyApp.star),
+  const ChoiceTab(title: 'HISTORY', icon: IconsForMyApp.history),
 ];

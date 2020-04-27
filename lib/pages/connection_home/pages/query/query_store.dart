@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/query_model.dart';
 import 'package:mobx/mobx.dart';
 
@@ -12,10 +13,10 @@ class QueryStore = _QueryStore with _$QueryStore;
 abstract class _QueryStore with Store {
 
   @observable
-  String query = '';
+  dynamic querySaved = QuerySaved();
 
   @action setQuery(String value) {
-    query = value;
+    querySaved = querySaved.copyWith(query: value);
   }
 
   @observable
@@ -32,7 +33,6 @@ abstract class _QueryStore with Store {
     rows = result;
 
   }
-
 
   @observable
   bool onTop = true;

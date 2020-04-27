@@ -1,10 +1,16 @@
-import 'package:dbclientapp/database/database.dart';
-import 'package:dbclientapp/database/model/ConnectionWithInfo.dart';
 import 'package:dbclientapp/pages/connection_home/widgets/expanded_item.dart';
-import 'package:dbclientapp/util/converter_util.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
+import './info_database_store.dart';
 
 class InfoDatabasePage extends StatefulWidget {
+
+  final int databaseInfoId;
+  final int connectionId;
+
+  const InfoDatabasePage({Key key, this.databaseInfoId, this.connectionId}) : super(key: key);
+
   @override
   _InfoDatabasePageState createState() => _InfoDatabasePageState();
 }
@@ -12,48 +18,109 @@ class InfoDatabasePage extends StatefulWidget {
 class _InfoDatabasePageState extends State<InfoDatabasePage> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ConnectionsWithInfo>(
-        stream: Database.instance.connectionDao.findConnectionWithInfo(1),
-        builder: (context, snapshot) {
 
-          if(!snapshot.hasData) return Container();
-
-          List<String> databases = ConverterUtil.stringToList(snapshot.data.databaseInfo.databases);
-          List<String> schemas = ConverterUtil.stringToList(snapshot.data.databaseInfo.schemas);
-          List<String> tables = ConverterUtil.stringToList(snapshot.data.databaseInfo.tables);
-          List<String> views = ConverterUtil.stringToList(snapshot.data.databaseInfo.views);
-          List<String> storeProcedures = ConverterUtil.stringToList(snapshot.data.databaseInfo.storeProcedures);
-          List<String> functions = ConverterUtil.stringToList(snapshot.data.databaseInfo.functions);
+    InfoDatabaseStore _controller = Provider.of<InfoDatabaseStore>(context);
+    _controller.initData(widget.connectionId);
 
           return Scaffold(
-            body: Container(
-              child: ListView(
-                children: <Widget>[
-                  ExpandedItem(
+            body: ListView(
+              children: <Widget>[
+                SizedBox(height: 20.0,),
+                Observer(
+                  builder: (_) => ExpandedItem(
                     title: 'Databases',
-                    image: 'assets/images/databases.png',
+                    image: 'assets/images/database.png',
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: databases.length,
+                      itemCount: _controller.databases.length,
+                      itemBuilder: (context, index) {
+                        bool isSelected = _controller.connection.databaseName == _controller.databases[index];
+                        return Container(
+                          color: (isSelected ? Colors.blueAccent : Colors.transparent),
+                          child: ListTile(
+                            leading: Image.asset('assets/images/database.png', height: 30.0,),
+                            title: Text(_controller.databases[index], style: TextStyle(color: (isSelected ? Colors.white : Colors.black87)),),
+                            trailing: PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Text('Make default'),
+                                    value: 'MAKE_DEFAULT',
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Drop'),
+                                    value: 'DROP',
+                                  ),
+                                ];
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+                Observer(
+                  builder: (_) => ExpandedItem(
+                    title: 'Schemas',
+                    image: 'assets/images/schema.png',
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _controller.schemas.length,
+                      itemBuilder: (context, index) {
+                        bool isSelected = _controller.connection.schema == _controller.schemas[index];
+                        return Container(
+                          color: (isSelected ? Colors.blueAccent : Colors.transparent),
+                          child: ListTile(
+                            leading: Image.asset('assets/images/schema.png', height: 30.0,),
+                            title: Text(_controller.schemas[index], style: TextStyle(color: (isSelected ? Colors.white : Colors.black87)),),
+                            trailing: PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Text('Make default'),
+                                    value: 'MAKE_DEFAULT',
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Drop'),
+                                    value: 'DROP',
+                                  ),
+                                ];
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+                Observer(
+                  builder: (_) => ExpandedItem(
+                    title: 'Tables',
+                    image: 'assets/images/table.png',
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _controller.tables.length,
                       itemBuilder: (context, index) {
                         return ListTile(
-                          leading: Image.asset(
-                            'assets/images/databases.png', height: 30.0,),
-                          title: Text(databases[index]),
+                          leading: Image.asset('assets/images/table.png', height: 30.0,),
+                          title: Text(_controller.tables[index], style: TextStyle(color: Colors.black87),),
                           trailing: PopupMenuButton(
                             itemBuilder: (context) {
                               return [
                                 PopupMenuItem(
-                                  child: Text('Edit'),
-                                  value: 'EDIT',
+                                  child: Text('New row'),
+                                  value: 'NEW_ROW',
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Copy'),
-                                  value: 'COPY',
+                                  child: Text('Edit rows'),
+                                  value: 'EDIT_ROWS',
                                 ),
                                 PopupMenuItem(
-                                  child: Text('Delete'),
-                                  value: 'DELETE',
+                                  child: Text('Drop'),
+                                  value: 'DROP',
                                 ),
                               ];
                             },
@@ -62,25 +129,86 @@ class _InfoDatabasePageState extends State<InfoDatabasePage> {
                       },
                     ),
                   ),
-                  ExpansionTile(
-                    title: Text('Schemas'),
-                    children: <Widget>[
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: schemas.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(schemas[index]),
-                          );
-                        },
-                      ),
-                    ],
+                ),
+
+                Observer(
+                  builder: (_) => ExpandedItem(
+                    title: 'Views',
+                    image: 'assets/images/view.png',
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _controller.views.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Image.asset('assets/images/view.png', height: 30.0,),
+                          title: Text(_controller.views[index], style: TextStyle(color: Colors.black87),),
+                          trailing: PopupMenuButton(
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Text('Drop'),
+                                  value: 'DROP',
+                                ),
+                              ];
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ],
-              ),
+                ),
+
+                Observer(
+                  builder: (_) => ExpandedItem(
+                    title: 'Stored Procedures',
+                    image: 'assets/images/store_producer.png',
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _controller.storeProcedures.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Image.asset('assets/images/store_producer.png', height: 30.0,),
+                          title: Text(_controller.storeProcedures[index], style: TextStyle(color: Colors.black87),),
+                          trailing: PopupMenuButton(
+                            itemBuilder: (context) {
+                              return [];
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+                Observer(
+                  builder: (_) => ExpandedItem(
+                    title: 'Functions',
+                    image: 'assets/images/function.png',
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _controller.functions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: Image.asset('assets/images/function.png', height: 30.0,),
+                          title: Text(_controller.functions[index], style: TextStyle(color: Colors.black87),),
+                          trailing: PopupMenuButton(
+                            itemBuilder: (context) {
+                              return [
+                                PopupMenuItem(
+                                  child: Text('Drop'),
+                                  value: 'DROP',
+                                ),
+                              ];
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+              ],
             ),
           );
-        }
-    );
   }
 }

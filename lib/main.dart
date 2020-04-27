@@ -6,6 +6,11 @@ import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/connection_home/pages/info_database/info_database_store.dart';
+import 'pages/connection_home/pages/history/history_store.dart';
+import 'pages/connection_home/pages/favorite/favorite_store.dart';
+import 'pages/connection_home/connection_home_store.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -19,6 +24,18 @@ class MyApp extends StatelessWidget {
         ),
         Provider<QueryStore>(
           create: (_) => QueryStore(),
+        ),
+        Provider<InfoDatabaseStore>(
+          create: (_) => InfoDatabaseStore(),
+        ),
+        Provider<HistoryStore>(
+          create: (_) => HistoryStore(),
+        ),
+        Provider<FavoriteStore>(
+          create: (_) => FavoriteStore(),
+        ),
+        Provider<ConnectionHomeStore>(
+          create: (_) => ConnectionHomeStore(),
         ),
       ],
       child: MainApp(),

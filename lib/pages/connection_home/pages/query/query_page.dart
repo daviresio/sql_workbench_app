@@ -13,8 +13,11 @@ class QueryPage extends StatefulWidget {
 
   final int databaseInfoId;
   final int connectionId;
+  final Function setQuerySaved;
 
-  const QueryPage({Key key, this.databaseInfoId, this.connectionId}) : super(key: key);
+  QueryPage({Key key, this.databaseInfoId, this.connectionId, this.setQuerySaved}) : super(key: key);
+
+  TextEditingController queryEditingController = TextEditingController();
 
   @override
   _QueryPageState createState() => _QueryPageState();
@@ -26,7 +29,6 @@ class _QueryPageState extends State<QueryPage> {
   final QuerySavedDao _querySavedDao = Database.instance.querySavedDao;
 
   ScrollController _scrollController;
-  TextEditingController _queryEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -66,11 +68,9 @@ class _QueryPageState extends State<QueryPage> {
     _saveQuery(QuerySaved querySaved) async {
       if(querySaved.id != null && querySaved.id > 0) {
         var result = await _querySavedDao.edit(querySaved);
-        _controller.setQuery(_controller.querySaved.copyWith(id: result));
+        _controller.setQuery(_controller.querySaved.copyWith(id: result, query: widget.queryEditingController.text));
       } else {
         var result = await _querySavedDao.add(querySaved);
-        print(result);
-        print(result.toString());
       }
     }
 
@@ -89,16 +89,16 @@ class _QueryPageState extends State<QueryPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
                     child: TextFormField(
-                      initialValue: _controller.querySaved.query,
+                      controller: widget.queryEditingController,
                       onChanged: _controller.setQuery,
-//                      controller: _queryEditingController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
                       decoration: InputDecoration(
                         labelText: 'Query',
                         suffix: GestureDetector(
                           child: Icon(Icons.close),
                           onTap: () {
-                            _controller.setQuery('');
-//                            WidgetsBinding.instance.addPostFrameCallback((_) => _queryEditingController.clear());
+                            WidgetsBinding.instance.addPostFrameCallback((_) => widget.queryEditingController.clear());
                           },
                         ),
                       ),
@@ -110,7 +110,7 @@ class _QueryPageState extends State<QueryPage> {
                       FlatButton(
                         child: Text('SAVE'),
                         onPressed: () {
-                          _saveQuery(_controller.querySaved.copyWith(saved: true, databaseInfoId: widget.databaseInfoId));
+                          _saveQuery(_controller.querySaved.copyWith(saved: true, databaseInfoId: widget.databaseInfoId, query: widget.queryEditingController.text));
                         },
                       ),
                       FlatButton(
@@ -121,13 +121,13 @@ class _QueryPageState extends State<QueryPage> {
                             QueryModel query = QueryModel();
                             var connection =  await Database.instance.connectionDao.find(widget.connectionId);
                             query.connection = ConnectionModel.fromTable(connection);
-                            query.query = _controller.querySaved.query;
+                            query.query = widget.queryEditingController.text;
 
                             await _controller.fetchQuery(query).whenComplete(() {
                               Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                               FocusScope.of(context).requestFocus(new FocusNode());
                               _scrollToBottom();
-                              _saveQuery(QuerySaved(query: _controller.querySaved.query, databaseInfoId: widget.databaseInfoId));
+                              _saveQuery(QuerySaved(query: widget.queryEditingController.text, databaseInfoId: widget.databaseInfoId));
                             });
                           } catch(e) {
                             Dialogs.errorDialog(e, true, context);
@@ -143,6 +143,8 @@ class _QueryPageState extends State<QueryPage> {
           Observer(
             builder: (_) {
               if(_controller.columns.length == 0) return Container();
+
+
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: <Widget>[
@@ -155,9 +157,21 @@ class _QueryPageState extends State<QueryPage> {
                       scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columns: _controller.columns.map((value) => DataColumn(label: Text(value))).toList(),
-                          rows: _getRows(),
+                        child: Observer(
+                          builder: (_) {
+                            List<DataRow> cells = List<DataRow>.from(_controller.renderedRows);
+                            return DataTable(
+                              sortColumnIndex: _controller.columnSortIndex,
+                              sortAscending: _controller.columnSortAsc,
+                              columns: _controller.columns.map((value) =>
+                                  DataColumn(label: Text(value),
+                                      numeric: value.runtimeType == int ||
+                                          value.runtimeType == double,
+                                      onSort: _controller.changeTableSort))
+                                  .toList(),
+                              rows: cells,
+                            );
+                          }
                         ),
                       ),
                     ),

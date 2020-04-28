@@ -22,6 +22,13 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
 
   final GlobalKey<State> _globalKey = GlobalKey<State>();
 
+  TextEditingController _nameEditingController = TextEditingController();
+  TextEditingController _hostNameEditingController = TextEditingController();
+  TextEditingController _portEditingController = TextEditingController();
+  TextEditingController _databaseEditingController = TextEditingController();
+  TextEditingController _userEditingController = TextEditingController();
+  TextEditingController _passwordEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final NewConnectionStore _controller = Provider.of<NewConnectionStore>(context);
@@ -29,7 +36,14 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
     final RouteArguments args = ModalRoute.of(context).settings.arguments;
 
     if(args != null) {
-      _controller.loadData(args.id);
+      _controller.loadData(args.id).then((Connection onValue) {
+        _nameEditingController.text = onValue.name;
+        _hostNameEditingController.text = onValue.host;
+        _portEditingController.text = onValue.port;
+        _databaseEditingController.text = onValue.databaseName;
+        _userEditingController.text = onValue.user;
+        _passwordEditingController.text = onValue.password;
+      });
     }
 
     return Scaffold(
@@ -49,66 +63,70 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       child: Observer(
                         builder: (_) => TextFormField(
                           decoration: TextFieldFormItemDecoraction('Name', IconsForMyApp.subtitles),
-                          initialValue: _controller.name,
                           onChanged: _controller.setName,
-
+                          controller: _nameEditingController,
                         ),
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    Observer(
-                      builder: (_) => ContainerFormItem(
-                        child: DropdownButton(
-                            hint: Text('Vendor'),
-                            isExpanded: true,
-                            value: _controller.vendor,
-                            items: databaseImages.keys.map((String value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(), onChanged: _controller.setVendor),
-                      ),
-                    ),
+                   ContainerFormItem(
+                        child: Observer(
+                          builder: (_) => DropdownButton(
+                              hint: Text('Vendor'),
+                              isExpanded: true,
+                              value: _controller.connection.vendor as String,
+                              items: () {
+                                var items = databaseImages.keys.map((String value) {
+                                  return DropdownMenuItem(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                });
+                                return List<DropdownMenuItem<String>>.from(items);
+                              }(),
+                              onChanged: _controller.setVendor
+                          ),
+                        ),
+                   ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
                         decoration: TextFieldFormItemDecoraction('Hostname', IconsForMyApp.link_outline),
-                        initialValue: _controller.host,
                         onChanged: _controller.setHost,
+                        controller: _hostNameEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
                         decoration: TextFieldFormItemDecoraction('Port', IconsForMyApp.export_outline),
-                        initialValue: _controller.port,
                         onChanged: _controller.setPort,
                         keyboardType: TextInputType.number,
+                        controller: _portEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
                         decoration: TextFieldFormItemDecoraction('Database', IconsForMyApp.database),
-                        initialValue: _controller.databaseName,
                         onChanged: _controller.setDatabaseName,
+                        controller: _databaseEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
                         decoration: TextFieldFormItemDecoraction('User', IconsForMyApp.user),
-                        initialValue: _controller.user,
                         onChanged: _controller.setUser,
+                        controller: _userEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(
                         decoration: TextFieldFormItemDecoraction('Password', IconsForMyApp.key),
-                        initialValue: _controller.password,
                         onChanged: _controller.setPassword,
+                        controller: _passwordEditingController,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
                       ),
@@ -120,9 +138,11 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text('SSH', style: TextStyle(color: Colors.blueAccent),),
-                          Switch(
-                            value: _controller.ssh,
-                            onChanged: _controller.setSsh,
+                          Observer(
+                            builder: (_) => Switch(
+                              value: _controller.connection.ssh,
+                              onChanged: _controller.setSsh,
+                            ),
                           ),
                         ],
                       ),
@@ -145,8 +165,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       onPressed: () async {
                         try {
                           Dialogs.showLoadingDialog(context, _globalKey);
-                          await NewConnectionRepository().connectDB(_controller.getConnection()).whenComplete(() {
-                            Future.delayed(Duration(seconds: 1));
+                          await NewConnectionRepository().connectDB(_controller.connection).whenComplete(() {
                             Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                           });
                           _scaffoldKey.currentState.showSnackBar(
@@ -155,7 +174,6 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                             ),
                           );
                         } catch(e) {
-                          print(e.toString());
                           Dialogs.errorDialog(e, true, context);
                         }
 
@@ -167,12 +185,18 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       onPressed: () async {
                         try {
                           Dialogs.showLoadingDialog(context, _globalKey);
-                          DatabaseInfoModel result = await NewConnectionRepository().connectDB(_controller.getConnection()).whenComplete(() {
+
+                          DatabaseInfoModel result = await NewConnectionRepository().connectDB(_controller.connection).whenComplete(() {
                             Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
                           });
                           var dataBaseInfo = result.toTable();
+                          if(_controller.connection.id == null || _controller.connection.id == 0) {
                           var databaseInfoId = await Database.instance.databaseInfoDao.add(dataBaseInfo);
-                          await Database.instance.connectionDao.add(_controller.getConnection().copyWith(databaseInfoId: databaseInfoId, schema: result.currentSchema));
+                          await Database.instance.connectionDao.add(_controller.connection.copyWith(databaseInfoId: databaseInfoId, schema: result.currentSchema));
+                          } else {
+                            await Database.instance.connectionDao.edit(_controller.connection.copyWith(schema: result.currentSchema));
+                            await Database.instance.databaseInfoDao.edit(dataBaseInfo.copyWith(id: _controller.connection.databaseInfoId));
+                          }
                           Navigator.of(context).pop();
                         } catch(e) {
                           print(e);

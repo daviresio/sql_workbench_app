@@ -12,6 +12,15 @@ Map<String, String> databaseImages =  {
   ORACLE_NAME: 'oracle.png',
 };
 
+
+Map<String, String> databaseUrl =  {
+  POSTGRES_NAME: 'postgres',
+  MYSQL_NAME: 'mysql.png',
+  MARIA_DB_NAME: 'mariadb.png',
+  SQL_SERVER_NAME: 'mssql.png',
+  ORACLE_NAME: 'oracle.png',
+};
+
 Map<String, DefaultDatabaseConfig> databaseConfigs = {
   POSTGRES_NAME: DefaultDatabaseConfig(user: 'postgres', password: '', database: 'postgres', port: '5432', ssl: false),
   MYSQL_NAME: DefaultDatabaseConfig(user: '', password: '', database: '', port: '', ssl: false),

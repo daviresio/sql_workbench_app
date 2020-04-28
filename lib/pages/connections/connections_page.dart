@@ -6,6 +6,7 @@ import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
+import 'package:dbclientapp/util/string_util.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -99,11 +100,24 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                           ],
                         ),
                         trailing: PopupMenuButton(
-                          onSelected: (value) {
+                          onSelected: (value) async {
                             switch(value) {
                               case 'EDIT':
                                 Navigator.pushNamed(context, NewConnectionPage.routeName, arguments: RouteArguments(id: item.id));
                                 break;
+                              case 'COPY':
+                                DatabaseInfo databaseInfoAtual = await Database.instance.databaseInfoDao.find(item.databaseInfoId);
+                                int newDatabaseInfoId = await Database.instance.databaseInfoDao.add(databaseInfoAtual.copyWith(id: 0, createdAt: null, updatedAt: null));
+                                Connection newConnection = item.copyWith(id: 0, createdAt: null, updatedAt: null, databaseInfoId: newDatabaseInfoId, name: StringUtil.copyAddingNumber(item.name));
+                                await Database.instance.connectionDao.add(newConnection);
+                                break;
+                              case 'DELETE':
+                                bool deleteRecord = await Dialogs.deleteDialog(context);
+                                if(deleteRecord == true) {
+                                  await Database.instance.databaseInfoDao.remove(item.databaseInfoId);
+                                  await Database.instance.connectionDao.remove(item.id);
+                                }
+
                             }
                           },
                           itemBuilder: (context) {

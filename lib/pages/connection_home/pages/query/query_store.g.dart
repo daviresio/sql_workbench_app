@@ -60,6 +60,23 @@ mixin _$QueryStore on _QueryStore, Store {
     }, _$rowsAtom, name: '${_$rowsAtom.name}_set');
   }
 
+  final _$renderedRowsAtom = Atom(name: '_QueryStore.renderedRows');
+
+  @override
+  List<dynamic> get renderedRows {
+    _$renderedRowsAtom.context.enforceReadPolicy(_$renderedRowsAtom);
+    _$renderedRowsAtom.reportObserved();
+    return super.renderedRows;
+  }
+
+  @override
+  set renderedRows(List<dynamic> value) {
+    _$renderedRowsAtom.context.conditionallyRunInAction(() {
+      super.renderedRows = value;
+      _$renderedRowsAtom.reportChanged();
+    }, _$renderedRowsAtom, name: '${_$renderedRowsAtom.name}_set');
+  }
+
   final _$onTopAtom = Atom(name: '_QueryStore.onTop');
 
   @override
@@ -75,6 +92,47 @@ mixin _$QueryStore on _QueryStore, Store {
       super.onTop = value;
       _$onTopAtom.reportChanged();
     }, _$onTopAtom, name: '${_$onTopAtom.name}_set');
+  }
+
+  final _$columnSortIndexAtom = Atom(name: '_QueryStore.columnSortIndex');
+
+  @override
+  int get columnSortIndex {
+    _$columnSortIndexAtom.context.enforceReadPolicy(_$columnSortIndexAtom);
+    _$columnSortIndexAtom.reportObserved();
+    return super.columnSortIndex;
+  }
+
+  @override
+  set columnSortIndex(int value) {
+    _$columnSortIndexAtom.context.conditionallyRunInAction(() {
+      super.columnSortIndex = value;
+      _$columnSortIndexAtom.reportChanged();
+    }, _$columnSortIndexAtom, name: '${_$columnSortIndexAtom.name}_set');
+  }
+
+  final _$columnSortAscAtom = Atom(name: '_QueryStore.columnSortAsc');
+
+  @override
+  bool get columnSortAsc {
+    _$columnSortAscAtom.context.enforceReadPolicy(_$columnSortAscAtom);
+    _$columnSortAscAtom.reportObserved();
+    return super.columnSortAsc;
+  }
+
+  @override
+  set columnSortAsc(bool value) {
+    _$columnSortAscAtom.context.conditionallyRunInAction(() {
+      super.columnSortAsc = value;
+      _$columnSortAscAtom.reportChanged();
+    }, _$columnSortAscAtom, name: '${_$columnSortAscAtom.name}_set');
+  }
+
+  final _$fetchQueryAsyncAction = AsyncAction('fetchQuery');
+
+  @override
+  Future fetchQuery(QueryModel query) {
+    return _$fetchQueryAsyncAction.run(() => super.fetchQuery(query));
   }
 
   final _$_QueryStoreActionController = ActionController(name: '_QueryStore');
@@ -100,9 +158,29 @@ mixin _$QueryStore on _QueryStore, Store {
   }
 
   @override
+  dynamic changeTableSort(int position, bool asc) {
+    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    try {
+      return super.changeTableSort(position, asc);
+    } finally {
+      _$_QueryStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setRenderedRows() {
+    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    try {
+      return super.setRenderedRows();
+    } finally {
+      _$_QueryStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'querySaved: ${querySaved.toString()},columns: ${columns.toString()},rows: ${rows.toString()},onTop: ${onTop.toString()}';
+        'querySaved: ${querySaved.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()}';
     return '{$string}';
   }
 }

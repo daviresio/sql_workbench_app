@@ -42,4 +42,30 @@ class Dialogs {
     });
   }
 
+  static Future<bool> deleteDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Danger', style: TextStyle(color: Colors.redAccent),),
+          content: Text('Are you sure you want to delete this record?'),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text('NO', style: TextStyle(color: Colors.blueAccent),),
+            ),
+            FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('YES', style: TextStyle(color: Colors.redAccent),),
+            ),
+          ],
+        );
+      }
+    );
+  }
+  
 }

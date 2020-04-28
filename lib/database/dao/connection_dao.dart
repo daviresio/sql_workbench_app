@@ -29,8 +29,8 @@ class ConnectionDao extends DatabaseAccessor<Database> with _$ConnectionDaoMixin
    Stream<ConnectionsWithInfo> findConnectionWithInfo(int id) {
      var query = (select(connections)..where((t) => t.id.equals(id))).join([
        leftOuterJoin(databaseInfos, databaseInfos.id.equalsExp(connections.databaseInfoId))
-     ]).getSingle().then((row) => ConnectionsWithInfo(row.readTable(connections), row.readTable(databaseInfos))).asStream();
-     return query;
+     ]).watchSingle();
+     return query.map((row) => ConnectionsWithInfo(row.readTable(connections), row.readTable(databaseInfos)));
    }
 
 }

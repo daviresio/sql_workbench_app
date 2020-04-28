@@ -37,6 +37,13 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
         builder: (_) {
           if (_controller.connectionsWithInfo == null) return Container();
 
+          QueryPage queryPage = QueryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id);
+
+          void useQuerySaved(String query) {
+            _tabController.animateTo(1);
+            queryPage.queryEditingController.text = query;
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Column(
@@ -67,9 +74,9 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
               physics: NeverScrollableScrollPhysics(),
               controller: _tabController,
               children: <Widget>[
-                InfoDatabasePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
-                QueryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
-                FavoritePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
+                InfoDatabasePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id, useQuerySaved: useQuerySaved, ),
+                queryPage,
+                FavoritePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id, useQuerySaved: useQuerySaved,),
                 HistoryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
               ],
             ),

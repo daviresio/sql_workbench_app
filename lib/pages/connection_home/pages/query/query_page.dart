@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/view_row/dialog_view_row.dart';
+
 class QueryPage extends StatefulWidget {
 
   final int databaseInfoId;
@@ -57,14 +59,6 @@ class _QueryPageState extends State<QueryPage> {
       _controller.setOnTop(false);
     }
 
-    _getRows() {
-      var items = _controller.rows.map((row) {
-        var temp = row.values.map((value) => DataCell(Text(value.toString())));
-        return DataRow(cells: List<DataCell>.from(temp));
-      });
-      return List<DataRow>.from(items);
-    }
-
     _saveQuery(QuerySaved querySaved) async {
       if(querySaved.id != null && querySaved.id > 0) {
         var result = await _querySavedDao.edit(querySaved);
@@ -75,6 +69,10 @@ class _QueryPageState extends State<QueryPage> {
     }
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.file_download),
+      ),
       body: ListView(
         controller: _scrollController,
         shrinkWrap: true,
@@ -130,7 +128,8 @@ class _QueryPageState extends State<QueryPage> {
                               _saveQuery(QuerySaved(query: widget.queryEditingController.text, databaseInfoId: widget.databaseInfoId));
                             });
                           } catch(e) {
-                            Dialogs.errorDialog(e, true, context);
+//                            Dialogs.errorDialog(e, true, context);
+                          print(e);
                           }
                         },
                       ),
@@ -159,7 +158,15 @@ class _QueryPageState extends State<QueryPage> {
                         scrollDirection: Axis.horizontal,
                         child: Observer(
                           builder: (_) {
-                            List<DataRow> cells = List<DataRow>.from(_controller.renderedRows);
+
+                            var items = _controller.rows.map((row) {
+                              var temp = row.values.map((value) => DataCell(Text(value.toString()), onTap: () {
+                                showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types);
+                              }));
+                              return DataRow(cells: List<DataCell>.from(temp));
+                            });
+                            List<DataRow> cells = List<DataRow>.from(items);
+
                             return DataTable(
                               sortColumnIndex: _controller.columnSortIndex,
                               sortAscending: _controller.columnSortAsc,

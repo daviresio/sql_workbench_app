@@ -132,21 +132,22 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('SSH', style: TextStyle(color: Colors.blueAccent),),
-                          Observer(
-                            builder: (_) => Switch(
-                              value: _controller.connection.ssh,
-                              onChanged: _controller.setSsh,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+//TODO implementar conexao por ssh
+//                    Padding(
+//                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+//                      child: Row(
+//                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                        children: <Widget>[
+//                          Text('SSH', style: TextStyle(color: Colors.blueAccent),),
+//                          Observer(
+//                            builder: (_) => Switch(
+//                              value: _controller.connection.ssh,
+//                              onChanged: _controller.setSsh,
+//                            ),
+//                          ),
+//                        ],
+//                      ),
+//                    )
                   ],
                 ),
                 SizedBox(height: 20.0,),

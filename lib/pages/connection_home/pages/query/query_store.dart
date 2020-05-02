@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/query_model.dart';
-import 'package:flutter/material.dart';
+import 'package:dbclientapp/model/query_response_model.dart';
 import 'package:mobx/mobx.dart';
 
 import 'query_repository.dart';
@@ -21,6 +19,9 @@ abstract class _QueryStore with Store {
   }
 
   @observable
+  List<TypesResponseQueryModel> types = [];
+
+  @observable
   List<String> columns = [];
 
   @observable
@@ -31,11 +32,12 @@ abstract class _QueryStore with Store {
 
   @action
   fetchQuery(QueryModel query) async {
-    List<dynamic> result = await QueryRepository().execQuery(query);
-    if(result.length == 0) return;
+    List<QueryResponseModel> result = await QueryRepository().execQuery(query);
+    if(result == null || result.length == 0) return;
 
-    columns = result[0].keys.toList();
-    rows = result;
+    columns = result[0].data.keys.toList();
+    rows = List<dynamic>.from(result.map((value) => value.data));
+    types = List<TypesResponseQueryModel>.from(result.map((value) => value.types));
     setRenderedRows();
   }
 
@@ -68,11 +70,8 @@ abstract class _QueryStore with Store {
     if(!columnSortAsc) {
       rows = List<dynamic>.from(rows.reversed);
     }
-    var items = rows.map((row) {
-      var temp = row.values.map((value) => DataCell(Text(value.toString())));
-      return DataRow(cells: List<DataCell>.from(temp));
-    });
-    renderedRows = List<DataRow>.from(items);
+
+
   }
 
 }

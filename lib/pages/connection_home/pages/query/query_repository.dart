@@ -1,15 +1,18 @@
 import 'package:dbclientapp/model/error_model.dart';
 import 'package:dbclientapp/model/query_model.dart';
+import 'package:dbclientapp/model/query_response_model.dart';
 import 'package:dbclientapp/network/dio_config.dart';
 import 'package:dio/dio.dart';
 
 class QueryRepository {
 
-  Future<List<dynamic>> execQuery(QueryModel queryModel) async {
+  Future<List<QueryResponseModel>> execQuery(QueryModel queryModel) async {
     try {
       Response<dynamic> result = await postRequest(endpoint: '/postgres/query', body: queryModel.toJson());
-      var resData = (result.data ??= []);
-      var data = resData.map((value) => Map<String, dynamic>.from(value)).toList();
+      if(result.data == null) return null;
+
+      var data = List<QueryResponseModel>.from(result.data['data'].map((value) => QueryResponseModel.fromJson(value, result.data['types'])));
+
       return data;
     } on DioError catch(e) {
       print(e);

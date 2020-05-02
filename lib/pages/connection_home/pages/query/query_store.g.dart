@@ -26,6 +26,23 @@ mixin _$QueryStore on _QueryStore, Store {
     }, _$querySavedAtom, name: '${_$querySavedAtom.name}_set');
   }
 
+  final _$typesAtom = Atom(name: '_QueryStore.types');
+
+  @override
+  List<TypesResponseQueryModel> get types {
+    _$typesAtom.context.enforceReadPolicy(_$typesAtom);
+    _$typesAtom.reportObserved();
+    return super.types;
+  }
+
+  @override
+  set types(List<TypesResponseQueryModel> value) {
+    _$typesAtom.context.conditionallyRunInAction(() {
+      super.types = value;
+      _$typesAtom.reportChanged();
+    }, _$typesAtom, name: '${_$typesAtom.name}_set');
+  }
+
   final _$columnsAtom = Atom(name: '_QueryStore.columns');
 
   @override
@@ -180,7 +197,7 @@ mixin _$QueryStore on _QueryStore, Store {
   @override
   String toString() {
     final string =
-        'querySaved: ${querySaved.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()}';
+        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()}';
     return '{$string}';
   }
 }

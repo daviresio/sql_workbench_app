@@ -15,4 +15,8 @@ class ShowFlushbar {
     Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  static void copied(BuildContext context, {String message = 'Copied to clipboard!',}) {
+    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
 }

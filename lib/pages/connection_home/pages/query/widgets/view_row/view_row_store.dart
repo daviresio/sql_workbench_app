@@ -11,10 +11,10 @@ abstract class _ViewRowStore with Store {
   }
 
   @observable
-  bool editMode = true;
+  bool editMode = false;
 
   @action
-  void setFormDisabled(bool value) {
+  void setEditMode(bool value) {
     editMode = value;
   }
 
@@ -22,7 +22,7 @@ abstract class _ViewRowStore with Store {
   Map<String, dynamic> items;
 
   @action
-  void changeValue(dynamic value, String key) {
+  void changeValue(String key, dynamic value) {
     items[key] = value;
   }
 

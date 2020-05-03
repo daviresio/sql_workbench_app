@@ -53,7 +53,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sql Client',
+      title: 'Postgres Client',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

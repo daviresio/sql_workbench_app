@@ -29,6 +29,21 @@ class QueryRepository {
   Future<dynamic> deleteRecord(DeleteQueryModel deleteQueryModel) async {
     try {
       Response<dynamic> result = await postRequest(endpoint: '/postgres/delete', body: deleteQueryModel.toJson());
+      return true;
+    } on DioError catch(e) {
+      print(e);
+      if(e.type == DioErrorType.DEFAULT) {
+        throw e.error.source;
+      }
+
+      throw ErrorModel.fromJson(e.response.data).message;
+    }
+
+  }
+
+  Future<dynamic> updateRecord(DeleteQueryModel deleteQueryModel) async {
+    try {
+      Response<dynamic> result = await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
      print(result);
      print(result);
       return true;

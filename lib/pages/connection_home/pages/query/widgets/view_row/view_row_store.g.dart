@@ -47,20 +47,20 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
       ActionController(name: '_ViewRowStore');
 
   @override
-  void setFormDisabled(bool value) {
+  void setEditMode(bool value) {
     final _$actionInfo = _$_ViewRowStoreActionController.startAction();
     try {
-      return super.setFormDisabled(value);
+      return super.setEditMode(value);
     } finally {
       _$_ViewRowStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void changeValue(dynamic value, String key) {
+  void changeValue(String key, dynamic value) {
     final _$actionInfo = _$_ViewRowStoreActionController.startAction();
     try {
-      return super.changeValue(value, key);
+      return super.changeValue(key, value);
     } finally {
       _$_ViewRowStoreActionController.endAction(_$actionInfo);
     }

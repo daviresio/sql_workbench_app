@@ -31,4 +31,11 @@ class TypesResponseQueryModel {
     );
   }
 
+  Map<String, dynamic> toJson() => {
+    'columnName': columnName,
+    'columnIndex': columnIndex,
+    'tableId': tableId,
+    'dataType': dataType,
+  };
+
 }

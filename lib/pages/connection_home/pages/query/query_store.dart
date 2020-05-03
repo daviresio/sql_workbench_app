@@ -37,7 +37,7 @@ abstract class _QueryStore with Store {
 
     columns = result[0].data.keys.toList();
     rows = List<dynamic>.from(result.map((value) => value.data));
-    types = List<TypesResponseQueryModel>.from(result.map((value) => value.types));
+    types = result[0].types;
     setRenderedRows();
   }
 

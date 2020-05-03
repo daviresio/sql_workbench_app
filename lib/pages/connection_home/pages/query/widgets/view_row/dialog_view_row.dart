@@ -1,10 +1,14 @@
+import 'package:dbclientapp/database/database.dart';
+import 'package:dbclientapp/model/connection_model.dart';
+import 'package:dbclientapp/model/delete_query_model.dart';
 import 'package:dbclientapp/model/query_response_model.dart';
+import 'package:dbclientapp/pages/connection_home/pages/query/query_repository.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/widgets/view_row/view_row_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item, List<TypesResponseQueryModel> types}) {
+Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item, List<TypesResponseQueryModel> types, int connectionId}) {
   print(item.runtimeType);
   print(item.toString());
 
@@ -62,8 +66,11 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
             child: Text('CANCEL'),
           ),
           FlatButton(
-            onPressed: () {
-
+            onPressed: () async {
+              var conn =  await Database.instance.connectionDao.find(connectionId);
+              var connection = ConnectionModel.fromTable(conn);
+              DeleteQueryModel deleteQueryModel = DeleteQueryModel(data: item, types: types, connection: connection);
+              await QueryRepository().deleteRecord(deleteQueryModel);
             },
             child: Text('DELETE'),
           ),

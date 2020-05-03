@@ -161,7 +161,7 @@ class _QueryPageState extends State<QueryPage> {
 
                             var items = _controller.rows.map((row) {
                               var temp = row.values.map((value) => DataCell(Text(value.toString()), onTap: () {
-                                showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types);
+                                showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types, connectionId: widget.connectionId);
                               }));
                               return DataRow(cells: List<DataCell>.from(temp));
                             });

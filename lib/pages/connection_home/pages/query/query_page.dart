@@ -7,8 +7,10 @@ import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/download_result_query_result/dialog_download_result.dart';
 import 'widgets/view_row/dialog_view_row.dart';
 
 class QueryPage extends StatefulWidget {
@@ -69,9 +71,27 @@ class _QueryPageState extends State<QueryPage> {
     }
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.file_download),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        backgroundColor: Colors.blueAccent,
+        children: [
+          SpeedDialChild(
+            elevation: 8.0,
+            backgroundColor: Colors.green,
+            child: Icon(Icons.add),
+            onTap: () {
+
+            },
+          ),
+          SpeedDialChild(
+            elevation: 8.0,
+            backgroundColor: Colors.cyan,
+            child: Icon(Icons.file_download),
+            onTap: () async {
+              await showDialogDownloadResultQuery(context);
+            },
+          ),
+        ],
       ),
       body: ListView(
         controller: _scrollController,

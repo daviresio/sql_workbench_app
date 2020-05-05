@@ -26,6 +26,7 @@ dependencies:
   moor_ffi:
   path_provider:
   path:
+  flutter_speed_dial: ^1.2.5
   flutter:
     sdk: flutter
 

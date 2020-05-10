@@ -175,7 +175,8 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                             ),
                           );
                         } catch(e) {
-                          Dialogs.errorDialog(e, true, context);
+                          print(e);
+//                          Dialogs.errorDialog(e, true, context);
                         }
 
                       },

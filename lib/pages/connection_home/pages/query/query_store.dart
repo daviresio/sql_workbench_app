@@ -11,6 +11,9 @@ class QueryStore = _QueryStore with _$QueryStore;
 
 abstract class _QueryStore with Store {
 
+  @computed
+  bool get isQueryInSingleTable => types.map((type) => type.tableId).every((value) => value == types[0].tableId);
+
   @observable
   dynamic querySaved = QuerySaved();
 
@@ -69,6 +72,7 @@ abstract class _QueryStore with Store {
     rows.sort((a, b) => a[columns[columnSortIndex]].toString().compareTo(b[columns[columnSortIndex]].toString()));
     if(!columnSortAsc) {
       rows = List<dynamic>.from(rows.reversed);
+      print(rows.toString());
     }
 
 

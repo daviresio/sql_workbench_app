@@ -13,7 +13,6 @@ class QueryRepository {
       if(result.data == null) return null;
 
       var data = List<QueryResponseModel>.from(result.data['data'].map((value) => QueryResponseModel.fromJson(value, result.data['types'])));
-
       return data;
     } on DioError catch(e) {
       print(e);

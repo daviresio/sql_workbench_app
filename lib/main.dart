@@ -53,6 +53,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Postgres Client',
       theme: ThemeData(
         primarySwatch: Colors.blue,

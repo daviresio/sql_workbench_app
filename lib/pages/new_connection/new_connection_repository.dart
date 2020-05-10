@@ -15,19 +15,22 @@ class NewConnectionRepository {
       var result = await postRequest(
           endpoint: '/${databaseUrl[connection.vendor]}/database-info',
           body: connectionModel.toJson());
+      print(result);
       return DatabaseInfoModel.fromJson(result.data);
     } on DioError catch (e) {
-      print(e.error.osError);
+      if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+        throw e.error;
+      }
       if (e.type == DioErrorType.DEFAULT) {
+        if (e.error.message == "") {
+          throw e.error.osError.message;
+        }
         if (e.error.source != null) {
           throw e.error.source;
-        } else if (e.error.osError != null) {
-          throw e.error.osError;
         }
       }
 
       throw ErrorModel.fromJson(e.response.data).message;
     }
   }
-
 }

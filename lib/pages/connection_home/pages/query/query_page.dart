@@ -71,27 +71,29 @@ class _QueryPageState extends State<QueryPage> {
     }
 
     return Scaffold(
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        backgroundColor: Colors.blueAccent,
-        children: [
-          SpeedDialChild(
-            elevation: 8.0,
-            backgroundColor: Colors.green,
-            child: Icon(Icons.add),
-            onTap: () {
+      floatingActionButton: Observer(
+        builder: (_) => _controller.rows.length > 0 ? SpeedDial(
+          animatedIcon: AnimatedIcons.menu_close,
+          backgroundColor: Colors.blueAccent,
+          children: [
+            (_controller.isQueryInSingleTable ? SpeedDialChild(
+              elevation: 8.0,
+              backgroundColor: Colors.green,
+              child: Icon(Icons.add),
+              onTap: () {
 
-            },
-          ),
-          SpeedDialChild(
-            elevation: 8.0,
-            backgroundColor: Colors.cyan,
-            child: Icon(Icons.file_download),
-            onTap: () async {
-              await showDialogDownloadResultQuery(context);
-            },
-          ),
-        ],
+              },
+            ): Container()),
+            SpeedDialChild(
+              elevation: 8.0,
+              backgroundColor: Colors.cyan,
+              child: Icon(Icons.file_download),
+              onTap: () async {
+                await showDialogDownloadResultQuery(context, _controller.rows);
+              },
+            ),
+          ],
+        ) : Container(),
       ),
       body: ListView(
         controller: _scrollController,

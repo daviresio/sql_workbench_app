@@ -9,6 +9,13 @@ part of 'query_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$QueryStore on _QueryStore, Store {
+  Computed<bool> _$isQueryInSingleTableComputed;
+
+  @override
+  bool get isQueryInSingleTable => (_$isQueryInSingleTableComputed ??=
+          Computed<bool>(() => super.isQueryInSingleTable))
+      .value;
+
   final _$querySavedAtom = Atom(name: '_QueryStore.querySaved');
 
   @override
@@ -197,7 +204,7 @@ mixin _$QueryStore on _QueryStore, Store {
   @override
   String toString() {
     final string =
-        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()}';
+        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
     return '{$string}';
   }
 }

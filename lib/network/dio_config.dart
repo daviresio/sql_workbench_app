@@ -1,3 +1,4 @@
+import 'package:dbclientapp/model/error_model.dart';
 import 'package:dio/dio.dart';
 
 //final String BASE_URL = 'https://1vhggv59f4.execute-api.us-east-1.amazonaws.com/dev';
@@ -9,7 +10,23 @@ BaseOptions _baseOptions = BaseOptions(
 
 var _dio = Dio(_baseOptions);
 
+Future<dynamic> postRequest({String endpoint, body}) async {
+  try {
+    var result = await _dio.post('$BASE_URL$endpoint', data: body);
+    return result;
+  } on DioError catch (e) {
+    if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+      throw e.error;
+    }
+    if (e.type == DioErrorType.DEFAULT) {
+      if (e.error.message == "") {
+        throw e.error.osError.message;
+      }
+      if (e.error.source != null) {
+        throw e.error.source;
+      }
+    }
 
-Future postRequest({String endpoint, body}) {
-  return _dio.post('$BASE_URL$endpoint', data: body);
+    throw ErrorModel.fromJson(e.response.data).message;
+  }
 }

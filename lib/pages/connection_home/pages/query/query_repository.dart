@@ -6,14 +6,12 @@ import 'package:dio/dio.dart';
 
 class QueryRepository {
 
-  Future<List<QueryResponseModel>> execQuery(QueryModel queryModel) async {
+  Future<List<dynamic>> execQuery(QueryModel queryModel) async {
     try {
       Response<dynamic> result = await postRequest(endpoint: '/postgres/query', body: queryModel.toJson());
       if(result.data == null) return null;
 
-      var data = List<QueryResponseModel>.from(result.data['data'].map((value) => QueryResponseModel.fromJson(value, result.data['types'])));
-      print(data);
-      return data;
+      return List<dynamic>.from([result.data['data'], result.data['types'].map((value) => TypesResponseQueryModel.fromJson(value))]);
     } catch (e) {
       throw e.toString();
     }

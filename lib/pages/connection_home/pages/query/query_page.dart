@@ -74,7 +74,7 @@ class _QueryPageState extends State<QueryPage> {
       floatingActionButton: Observer(
         //TODO exibir com base se a pesquisa foi feita e nao se tem linhas
         builder: (_) {
-//          print(_controller.types.toString());
+          print(_controller.types);
           return _controller.rows.length > 0 ? SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
             backgroundColor: Colors.blueAccent,
@@ -156,6 +156,7 @@ class _QueryPageState extends State<QueryPage> {
                               _saveQuery(QuerySaved(query: widget.queryEditingController.text, databaseInfoId: widget.databaseInfoId));
                             });
                           } catch(e) {
+                            print(e.toString());
                             Dialogs.errorDialog(e, context);
                           print(e);
                           }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "64998542656",
+    "firebase_url": "https://db-client-e1c7f.firebaseio.com",
+    "project_id": "db-client-e1c7f",
+    "storage_bucket": "db-client-e1c7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:64998542656:android:96bb5b0dc56b671f167ea5",
+        "android_client_info": {
+          "package_name": "com.resio.dbclientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "64998542656-rp1vco2mkundgpts187k2tbc3jhssl03.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.resio.dbclientapp",
+            "certificate_hash": "3ab9057de19cf61a6f5d3d8a3668c1877e5da4ae"
+          }
+        },
+        {
+          "client_id": "64998542656-0desot4surajsv5ptvkql1f7bqu5vrhi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATOYnlQeWEH8fLrj7pHgspFCLDFzmkkAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "64998542656-0desot4surajsv5ptvkql1f7bqu5vrhi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

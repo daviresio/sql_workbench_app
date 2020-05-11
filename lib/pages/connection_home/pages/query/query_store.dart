@@ -35,13 +35,12 @@ abstract class _QueryStore with Store {
 
   @action
   fetchQuery(QueryModel query) async {
-    List<QueryResponseModel> result = await QueryRepository().execQuery(query);
+    //position 0 is the value and position 1 is the types
+    List<dynamic> result = await QueryRepository().execQuery(query);
     print(result.toString());
-    if(result == null || result.length == 0) return;
-
-    columns = result[0].data.keys.toList();
-    rows = List<dynamic>.from(result.map((value) => value.data));
-    types = result[0].types;
+    types = List<TypesResponseQueryModel>.from(result[1]);
+    columns = types.map((v) => v.columnName).toList();
+    rows = List<dynamic>.from(result[0]);
     setRenderedRows();
   }
 

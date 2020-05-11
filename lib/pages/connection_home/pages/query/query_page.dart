@@ -72,28 +72,34 @@ class _QueryPageState extends State<QueryPage> {
 
     return Scaffold(
       floatingActionButton: Observer(
-        builder: (_) => _controller.rows.length > 0 ? SpeedDial(
-          animatedIcon: AnimatedIcons.menu_close,
-          backgroundColor: Colors.blueAccent,
-          children: [
-            (_controller.isQueryInSingleTable ? SpeedDialChild(
-              elevation: 8.0,
-              backgroundColor: Colors.green,
-              child: Icon(Icons.add),
-              onTap: () {
+        //TODO exibir com base se a pesquisa foi feita e nao se tem linhas
+        builder: (_) {
+//          print(_controller.types.toString());
+          return _controller.rows.length > 0 ? SpeedDial(
+            animatedIcon: AnimatedIcons.menu_close,
+            backgroundColor: Colors.blueAccent,
+            children: [
+              (_controller.isQueryInSingleTable ? SpeedDialChild(
+                elevation: 8.0,
+                backgroundColor: Colors.green,
+                child: Icon(Icons.add),
+                onTap: () {
 
-              },
-            ): Container()),
-            SpeedDialChild(
-              elevation: 8.0,
-              backgroundColor: Colors.cyan,
-              child: Icon(Icons.file_download),
-              onTap: () async {
-                await showDialogDownloadResultQuery(context, _controller.rows);
-              },
-            ),
-          ],
-        ) : Container(),
+                },
+              ) : Container()),
+              SpeedDialChild(
+                elevation: 8.0,
+                backgroundColor: Colors.cyan,
+                child: Icon(Icons.file_download),
+                onTap: () async {
+                  await showDialogDownloadResultQuery(
+                      context, _controller.rows);
+                },
+              ),
+            ],
+          ) : Container();
+
+        },
       ),
       body: ListView(
         controller: _scrollController,
@@ -150,7 +156,7 @@ class _QueryPageState extends State<QueryPage> {
                               _saveQuery(QuerySaved(query: widget.queryEditingController.text, databaseInfoId: widget.databaseInfoId));
                             });
                           } catch(e) {
-//                            Dialogs.errorDialog(e, true, context);
+                            Dialogs.errorDialog(e, context);
                           print(e);
                           }
                         },

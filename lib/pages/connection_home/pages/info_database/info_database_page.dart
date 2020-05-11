@@ -61,7 +61,7 @@ class _InfoDatabasePageState extends State<InfoDatabasePage> {
                                     await Database.instance.connectionDao.edit(_controller.connection.copyWith(schema: result.currentSchema, databaseName: _controller.databases[index]));
                                     await Database.instance.databaseInfoDao.edit(dataBaseInfo.copyWith(id: _controller.connection.databaseInfoId));
                                 } catch(e) {
-                                  Dialogs.errorDialog(e, true, context);
+                                  Dialogs.errorDialog(e, context);
                                 }
                                 break;
                                 }

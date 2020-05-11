@@ -36,6 +36,7 @@ abstract class _QueryStore with Store {
   @action
   fetchQuery(QueryModel query) async {
     List<QueryResponseModel> result = await QueryRepository().execQuery(query);
+    print(result.toString());
     if(result == null || result.length == 0) return;
 
     columns = result[0].data.keys.toList();

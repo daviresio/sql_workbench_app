@@ -2,6 +2,7 @@ import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/database_info_model.dart';
 import 'package:dbclientapp/model/route_arguments.dart';
+import 'package:dbclientapp/network/request.dart';
 import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
@@ -20,7 +21,7 @@ class ConnectionsPage extends StatefulWidget {
 
 class _ConnectionsPageState extends State<ConnectionsPage> {
 
-  final GlobalKey<State> _globalKey = GlobalKey<State>();
+  GlobalKey<State> _globalKey = GlobalKey<State>();
   final _connectionsDao = Database.instance.connectionDao;
 
   @override
@@ -44,16 +45,11 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                   return GestureDetector(
                     onTap: () async {
                       try {
-                        Dialogs.showLoadingDialog(context, _globalKey);
-                        DatabaseInfoModel result = await NewConnectionRepository().connectDB(item).whenComplete(() {
-                          Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-                        });
+                        DatabaseInfoModel result = await Request().connectDB(item, context);
                         var dataBaseInfo = result.toTable();
                         await Database.instance.databaseInfoDao.edit(dataBaseInfo.copyWith(id: item.databaseInfoId));
                         Navigator.pushNamed(context, ConnectionHome.routeName, arguments: RouteArguments(id: item.id));
-                      } catch(e) {
-                        Dialogs.errorDialog(e, true, context);
-                      }
+                      } catch(e) {}
                     },
                     child: Card(
                       child: ListTile(

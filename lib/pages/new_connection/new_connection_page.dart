@@ -202,7 +202,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                           Navigator.of(context).pop();
                         } catch(e) {
                           print(e);
-                          Dialogs.errorDialog(e, true, context);
+                          Dialogs.errorDialog(e, context);
                         }
                       },
                     ),

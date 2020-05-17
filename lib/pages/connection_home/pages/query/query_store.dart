@@ -75,7 +75,14 @@ abstract class _QueryStore with Store {
       print(rows.toString());
     }
 
+  }
 
+  @observable
+  String lastQueryExecuted = '';
+
+  @action
+  setLastQueryExecuted(String value) {
+    lastQueryExecuted = value;
   }
 
 }

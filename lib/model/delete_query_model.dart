@@ -19,4 +19,10 @@ class DeleteQueryModel {
     };
   }
 
+  @override
+  String toString() {
+    return 'DeleteQueryModel{connection: $connection, data: $data, types: $types}';
+  }
+
+
 }

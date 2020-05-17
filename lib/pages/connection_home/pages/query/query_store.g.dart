@@ -152,6 +152,23 @@ mixin _$QueryStore on _QueryStore, Store {
     }, _$columnSortAscAtom, name: '${_$columnSortAscAtom.name}_set');
   }
 
+  final _$lastQueryExecutedAtom = Atom(name: '_QueryStore.lastQueryExecuted');
+
+  @override
+  String get lastQueryExecuted {
+    _$lastQueryExecutedAtom.context.enforceReadPolicy(_$lastQueryExecutedAtom);
+    _$lastQueryExecutedAtom.reportObserved();
+    return super.lastQueryExecuted;
+  }
+
+  @override
+  set lastQueryExecuted(String value) {
+    _$lastQueryExecutedAtom.context.conditionallyRunInAction(() {
+      super.lastQueryExecuted = value;
+      _$lastQueryExecutedAtom.reportChanged();
+    }, _$lastQueryExecutedAtom, name: '${_$lastQueryExecutedAtom.name}_set');
+  }
+
   final _$fetchQueryAsyncAction = AsyncAction('fetchQuery');
 
   @override
@@ -202,9 +219,19 @@ mixin _$QueryStore on _QueryStore, Store {
   }
 
   @override
+  dynamic setLastQueryExecuted(String value) {
+    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    try {
+      return super.setLastQueryExecuted(value);
+    } finally {
+      _$_QueryStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
+        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},lastQueryExecuted: ${lastQueryExecuted.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
     return '{$string}';
   }
 }

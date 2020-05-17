@@ -38,4 +38,10 @@ class TypesResponseQueryModel {
     'dataType': dataType,
   };
 
+  @override
+  String toString() {
+    return 'TypesResponseQueryModel{columnName: $columnName, columnIndex: $columnIndex, tableId: $tableId, dataType: $dataType}';
+  }
+
+
 }

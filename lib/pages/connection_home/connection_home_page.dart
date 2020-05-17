@@ -77,7 +77,7 @@ class _ConnectionHomeState extends State<ConnectionHome> with TickerProviderStat
                 InfoDatabasePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id, useQuerySaved: useQuerySaved, ),
                 queryPage,
                 FavoritePage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id, useQuerySaved: useQuerySaved,),
-                HistoryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id),
+                HistoryPage(databaseInfoId: _controller.connectionsWithInfo.databaseInfo.id, connectionId: _controller.connectionsWithInfo.connection.id, useQuerySaved: useQuerySaved,),
               ],
             ),
           );

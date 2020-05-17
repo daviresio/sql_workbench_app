@@ -39,7 +39,6 @@ class _FavoritePageState extends State<FavoritePage> {
               return Card(
                 child: ListTile(
                   onTap: () {
-                    print(widget.useQuerySaved);
                     widget.useQuerySaved(item.query);
                   },
                   leading: Image.asset('assets/images/favorite.png', height: 20.0,),

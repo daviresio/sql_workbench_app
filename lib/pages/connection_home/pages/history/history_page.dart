@@ -11,8 +11,9 @@ class HistoryPage extends StatefulWidget {
 
   final int databaseInfoId;
   final int connectionId;
+  final Function useQuerySaved;
 
-  const HistoryPage({Key key, this.databaseInfoId, this.connectionId}) : super(key: key);
+  const HistoryPage({Key key, this.databaseInfoId, this.connectionId, this.useQuerySaved}) : super(key: key);
 
   @override
   _HistoryPageState createState() => _HistoryPageState();
@@ -35,6 +36,9 @@ class _HistoryPageState extends State<HistoryPage> {
               QuerySaved item = _controller.historyList[index];
               return Card(
                 child: ListTile(
+                  onTap: () {
+                    widget.useQuerySaved(item.query);
+                  },
                   leading: Image.asset('assets/images/calendar.png', height: 20.0,),
                   title: Text(item.query),
                   subtitle: Align(

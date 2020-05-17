@@ -62,11 +62,48 @@ class _QueryPageState extends State<QueryPage> {
     }
 
     _saveQuery(QuerySaved querySaved) async {
+      var value = widget.queryEditingController.text.trim();
+
+      if(value == '') {
+        //TODO colocar uma mensagem para dizer que a query esta vazia
+        return;
+      }
+
       if(querySaved.id != null && querySaved.id > 0) {
         var result = await _querySavedDao.edit(querySaved);
-        _controller.setQuery(_controller.querySaved.copyWith(id: result, query: widget.queryEditingController.text));
+        _controller.setQuery(_controller.querySaved.copyWith(id: result, query: value));
       } else {
-        var result = await _querySavedDao.add(querySaved);
+        var result = await _querySavedDao.add(querySaved.copyWith(query: value));
+      }
+    }
+
+    _handleQuery([value]) async {
+      value ??= widget.queryEditingController.text.trim();
+
+      if(value == '') {
+        //TODO colocar uma mensagem para dizer que a query esta vazia
+        return;
+      }
+
+      try {
+        Dialogs.showLoadingDialog(context, _globalKey);
+        QueryModel query = QueryModel();
+        var connection =  await Database.instance.connectionDao.find(widget.connectionId);
+        query.connection = ConnectionModel.fromTable(connection);
+        query.query = value;
+
+        await _controller.fetchQuery(query).whenComplete(() {
+          Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
+          FocusScope.of(context).requestFocus(new FocusNode());
+          _scrollToBottom();
+          _saveQuery(QuerySaved(query: value, databaseInfoId: widget.databaseInfoId));
+        });
+
+        _controller.setLastQueryExecuted(value);
+
+      } catch(e) {
+        Dialogs.errorDialog(e, context);
+        print(e);
       }
     }
 
@@ -74,7 +111,6 @@ class _QueryPageState extends State<QueryPage> {
       floatingActionButton: Observer(
         //TODO exibir com base se a pesquisa foi feita e nao se tem linhas
         builder: (_) {
-          print(_controller.types);
           return _controller.rows.length > 0 ? SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
             backgroundColor: Colors.blueAccent,
@@ -84,7 +120,7 @@ class _QueryPageState extends State<QueryPage> {
                 backgroundColor: Colors.green,
                 child: Icon(Icons.add),
                 onTap: () {
-
+                  showViewDialog(context: context, item: null, types: _controller.types, connectionId: widget.connectionId);
                 },
               ) : Container()),
               SpeedDialChild(
@@ -136,31 +172,13 @@ class _QueryPageState extends State<QueryPage> {
                       FlatButton(
                         child: Text('SAVE'),
                         onPressed: () {
-                          _saveQuery(_controller.querySaved.copyWith(saved: true, databaseInfoId: widget.databaseInfoId, query: widget.queryEditingController.text));
+                          _saveQuery(_controller.querySaved.copyWith(saved: true, databaseInfoId: widget.databaseInfoId));
                         },
                       ),
                       FlatButton(
-                        child: Text('GO'),
-                        onPressed: () async {
-                          try {
-                            Dialogs.showLoadingDialog(context, _globalKey);
-                            QueryModel query = QueryModel();
-                            var connection =  await Database.instance.connectionDao.find(widget.connectionId);
-                            query.connection = ConnectionModel.fromTable(connection);
-                            query.query = widget.queryEditingController.text;
 
-                            await _controller.fetchQuery(query).whenComplete(() {
-                              Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-                              FocusScope.of(context).requestFocus(new FocusNode());
-                              _scrollToBottom();
-                              _saveQuery(QuerySaved(query: widget.queryEditingController.text, databaseInfoId: widget.databaseInfoId));
-                            });
-                          } catch(e) {
-                            print(e.toString());
-                            Dialogs.errorDialog(e, context);
-                          print(e);
-                          }
-                        },
+                        child: Text('GO'),
+                        onPressed: _handleQuery,
                       ),
                     ],
                   )
@@ -189,8 +207,11 @@ class _QueryPageState extends State<QueryPage> {
                           builder: (_) {
 
                             var items = _controller.rows.map((row) {
-                              var temp = row.values.map((value) => DataCell(Text(value.toString()), onTap: () {
-                                showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types, connectionId: widget.connectionId);
+                              var temp = row.values.map((value) => DataCell(Text(value.toString()), onTap: () async {
+                                var result = await showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types, connectionId: widget.connectionId);
+                                if(result == true) {
+                                  _handleQuery(_controller.lastQueryExecuted);
+                                }
                               }));
                               return DataRow(cells: List<DataCell>.from(temp));
                             });

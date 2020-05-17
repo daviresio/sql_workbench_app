@@ -4,16 +4,15 @@ import 'package:dbclientapp/model/delete_query_model.dart';
 import 'package:dbclientapp/model/query_response_model.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/query_repository.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/widgets/view_row/view_row_store.dart';
+import 'package:dbclientapp/util/string_util.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item, List<TypesResponseQueryModel> types, int connectionId}) {
-  print(item.runtimeType);
-  print(item.toString());
 
-  ViewRowStore _controller = ViewRowStore(item);
+  ViewRowStore _controller = ViewRowStore(item, types);
 
   return showDialog(
       context: context,
@@ -24,13 +23,13 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
           width: 300.0,
           height: MediaQuery.of(context).size.height * 0.5,
           child: Observer(
-              builder: (_)  {
-                if(_controller.items == null) return Container();
+              builder: (_) {
+                if(_controller.types == null) return Container();
 
-                List<String> keys = _controller.items.keys.toList();
-                List<dynamic> values = _controller.items.values.toList();
+                List<String> keys = _controller.types.map((e) => e.columnName).toList();
+                Map<String, dynamic> values = _controller.items;
                 return ListView.builder(
-                  itemCount: keys.length,
+                  itemCount: types.length,
                   itemBuilder: (context, index) {
                     return Card(
                       child: ListTile(
@@ -39,7 +38,7 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
                             child: Observer(
                               builder: (_) => GetInput(
                                 enabled: _controller.editMode,
-                                initialValue: values[index].toString(),
+                                initialValue: StringUtil.extractMapFieldTostring(values, keys[index]),
                                 onChanged: (value) => _controller.changeValue(keys[index], value),
                                 labelText: keys[index],
                                   //FIXME pegar o datatype filtrando pela coluna do mesmo nome e nao pelo index, pois pode ocasionar bugs
@@ -52,7 +51,7 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
                           child: Text(types[index].dataType, style: TextStyle(fontSize: 12.0),),
                         ),
                         trailing: IconButton(icon: Icon(Icons.content_copy), onPressed: () {
-                            Clipboard.setData(ClipboardData(text: values[index].toString()));
+                            Clipboard.setData(ClipboardData(text: StringUtil.extractMapFieldTostring(values, keys[index])));
                           //TODO exibir flushbar apos o registro ser copiado
                           //ShowFlushbar.copied(context);
                         }),
@@ -100,13 +99,12 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
               onPressed: () async {
                 if(_controller.editMode) {
                   try {
-                    print(_controller.items.toString());
                     var conn =  await Database.instance.connectionDao.find(connectionId);
                     var connection = ConnectionModel.fromTable(conn);
                     DeleteQueryModel deleteQueryModel = DeleteQueryModel(data: _controller.items, types: types, connection: connection);
                     await QueryRepository().updateRecord(deleteQueryModel);
                     //TODO pesquisar ultima query pesquisada apos atualizar
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
                   } catch(e) {
                     print(e);
                   }

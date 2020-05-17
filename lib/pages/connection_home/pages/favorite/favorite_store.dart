@@ -17,7 +17,7 @@ abstract class _FavoriteStore with Store {
 
   initData(int databaseInfoId) {
     Database.instance.querySavedDao.listFavorite(databaseInfoId).listen((List<QuerySaved> onData) {
-      setFavoriteList(onData);
+      setFavoriteList(List<QuerySaved>.from(onData.reversed));
     });
   }
 

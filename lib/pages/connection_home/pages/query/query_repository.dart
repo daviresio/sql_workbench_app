@@ -13,9 +13,8 @@ class QueryRepository {
 
       return List<dynamic>.from([result.data['data'], result.data['types'].map((value) => TypesResponseQueryModel.fromJson(value))]);
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
-
   }
 
   Future<dynamic> deleteRecord(DeleteQueryModel deleteQueryModel) async {
@@ -23,21 +22,31 @@ class QueryRepository {
       Response<dynamic> result = await postRequest(endpoint: '/postgres/delete', body: deleteQueryModel.toJson());
       return true;
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
 
   }
 
   Future<dynamic> updateRecord(DeleteQueryModel deleteQueryModel) async {
     try {
+      print(deleteQueryModel.toString());
       Response<dynamic> result = await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
-     print(result);
      print(result);
       return true;
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
+  }
 
+  Future<dynamic> saveRecord(DeleteQueryModel deleteQueryModel) async {
+    try {
+      print(deleteQueryModel.toString());
+      Response<dynamic> result = await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
+     print(result);
+      return true;
+    } catch (e) {
+      rethrow;
+    }
   }
 
 }

@@ -17,7 +17,7 @@ abstract class _HistoryStore with Store {
 
   initData(int databaseInfoId) {
     Database.instance.querySavedDao.listHistory(databaseInfoId).listen((List<QuerySaved> onData) {
-      setHistoryList(onData);
+      setHistoryList(List<QuerySaved>.from(onData.reversed));
     });
   }
 

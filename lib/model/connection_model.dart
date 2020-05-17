@@ -25,4 +25,10 @@ class ConnectionModel {
     'databaseName': databaseName
   };
 
+  @override
+  String toString() {
+    return 'ConnectionModel{host: $host, port: $port, user: $user, password: $password, databaseName: $databaseName}';
+  }
+
+
 }

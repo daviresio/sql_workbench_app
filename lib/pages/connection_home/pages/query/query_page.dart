@@ -3,6 +3,7 @@ import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/connection_model.dart';
 import 'package:dbclientapp/model/query_model.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/query_store.dart';
+import 'package:dbclientapp/pages/connection_home/pages/query/widgets/query_result_table.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -95,7 +96,9 @@ class _QueryPageState extends State<QueryPage> {
         await _controller.fetchQuery(query).whenComplete(() {
           Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
           FocusScope.of(context).requestFocus(new FocusNode());
-          _scrollToBottom();
+
+          if(_controller.rows.length > 0) _scrollToBottom();
+
           _saveQuery(QuerySaved(query: value, databaseInfoId: widget.databaseInfoId));
         });
 
@@ -107,11 +110,19 @@ class _QueryPageState extends State<QueryPage> {
       }
     }
 
+    showDialogViewRow(Map<String, dynamic> row) async {
+      var result = await showViewDialog(context: context, item: row, types: _controller.types, connectionId: widget.connectionId);
+      if(result == true) {
+      _handleQuery(_controller.lastQueryExecuted);
+      }
+    }
+
     return Scaffold(
       floatingActionButton: Observer(
         //TODO exibir com base se a pesquisa foi feita e nao se tem linhas
         builder: (_) {
-          return _controller.rows.length > 0 ? SpeedDial(
+          return _controller.lastQueryExecuted != '' ? SpeedDial(
+            marginBottom: 60.0,
             animatedIcon: AnimatedIcons.menu_close,
             backgroundColor: Colors.blueAccent,
             children: [
@@ -202,34 +213,40 @@ class _QueryPageState extends State<QueryPage> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Observer(
-                          builder: (_) {
+                          scrollDirection: Axis.horizontal,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+                            child: Observer(
+                              builder: (_) {
+                                if(_controller.rows.length == 0 && _controller.lastQueryExecuted == '') return Container();
 
-                            var items = _controller.rows.map((row) {
-                              var temp = row.values.map((value) => DataCell(Text(value.toString()), onTap: () async {
-                                var result = await showViewDialog(context: context, item: Map<String, dynamic>.from(row), types: _controller.types, connectionId: widget.connectionId);
-                                if(result == true) {
-                                  _handleQuery(_controller.lastQueryExecuted);
-                                }
-                              }));
-                              return DataRow(cells: List<DataCell>.from(temp));
-                            });
-                            List<DataRow> cells = List<DataRow>.from(items);
+                                if(_controller.rows.length == 0 && _controller.lastQueryExecuted != '') return Center(
+                                    child:Text(
+                                        'This query return empty result',
+                                      style: TextStyle(
+                                        color: Colors.black45,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ));
 
-                            return DataTable(
-                              sortColumnIndex: _controller.columnSortIndex,
-                              sortAscending: _controller.columnSortAsc,
-                              columns: _controller.columns.map((value) =>
-                                  DataColumn(label: Text(value),
-                                      numeric: value.runtimeType == int ||
-                                          value.runtimeType == double,
-                                      onSort: _controller.changeTableSort))
-                                  .toList(),
-                              rows: cells,
-                            );
-                          }
-                        ),
+                                return PaginatedDataTable(
+                                  sortColumnIndex: _controller.columnSortIndex,
+                                  sortAscending: _controller.columnSortAsc,
+                                  columns: _controller.columns.map((value) =>
+                                      DataColumn(label: Text(value),
+                                          numeric: value.runtimeType == int ||
+                                              value.runtimeType == double,
+                                          onSort: _controller.changeTableSort))
+                                      .toList(),
+                                  header: Container(),
+                                  source: QueryResultTable(_controller, showDialogViewRow),
+                                  rowsPerPage: _controller.rows.length < 50 ? _controller.rows.length : 50,
+                                  availableRowsPerPage: [25, 50, 75, 100],
+                                );
+                              },
+                            ),
+                          )
                       ),
                     ),
                   ),
@@ -248,7 +265,7 @@ class _QueryPageState extends State<QueryPage> {
                         ],
                       ),
                       child: Observer(
-                        builder: (_) => IconButton(
+                        builder: (_) => _controller.rows.length > 0 ? IconButton(
                           icon: _controller.onTop ? Icon(Icons.keyboard_arrow_down) : Icon(Icons.keyboard_arrow_up),
                           onPressed: () {
                             if(_controller.onTop) {
@@ -257,7 +274,7 @@ class _QueryPageState extends State<QueryPage> {
                               _scrollToTop();
                             }
                           },
-                        ),
+                        ) : Container(),
                       ),
                     ),
                   ),

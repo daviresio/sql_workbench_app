@@ -15,6 +15,9 @@ import 'package:flutter/widgets.dart';
 import '../../widgets/dialogs.dart';
 
 class ConnectionsPage extends StatefulWidget {
+
+  static const String routeName = '/';
+
   @override
   _ConnectionsPageState createState() => _ConnectionsPageState();
 }
@@ -99,13 +102,18 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
                           onSelected: (value) async {
                             switch(value) {
                               case 'EDIT':
+                                print(item.toString());
                                 Navigator.pushNamed(context, NewConnectionPage.routeName, arguments: RouteArguments(id: item.id));
                                 break;
                               case 'COPY':
                                 DatabaseInfo databaseInfoAtual = await Database.instance.databaseInfoDao.find(item.databaseInfoId);
-                                int newDatabaseInfoId = await Database.instance.databaseInfoDao.add(databaseInfoAtual.copyWith(id: 0, createdAt: null, updatedAt: null));
-                                Connection newConnection = item.copyWith(id: 0, createdAt: null, updatedAt: null, databaseInfoId: newDatabaseInfoId, name: StringUtil.copyAddingNumber(item.name));
-                                await Database.instance.connectionDao.add(newConnection);
+                                var newDatabaseInfoData = DatabaseInfo(databases: databaseInfoAtual.databases, tables: databaseInfoAtual.tables, functions: databaseInfoAtual.functions,
+                                schemas: databaseInfoAtual.schemas, storeProcedures: databaseInfoAtual.storeProcedures, views: databaseInfoAtual.views);
+                                int newDatabaseInfoId = await Database.instance.databaseInfoDao.add(newDatabaseInfoData);
+
+                                var newConnectionData = Connection(host: item.host, name: StringUtil.copyAddingNumber(item.name), vendor: item.vendor, ssh: item.ssh, port: item.port, password: item.password, user: item.user,
+                                databaseName: item.databaseName, schema: item.schema, databaseInfoId: newDatabaseInfoId);
+                                await Database.instance.connectionDao.add(newConnectionData);
                                 break;
                               case 'DELETE':
                                 bool deleteRecord = await Dialogs.deleteDialog(context);

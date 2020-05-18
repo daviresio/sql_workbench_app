@@ -137,6 +137,16 @@ class _InfoDatabasePageState extends State<InfoDatabasePage> {
                           leading: Image.asset('assets/images/table.png', height: 30.0,),
                           title: Text(_controller.tables[index], style: TextStyle(color: Colors.black87),),
                           trailing: PopupMenuButton(
+                            onSelected: (value) async {
+                              switch (value) {
+                                case 'NEW_ROW':
+
+                                  break;
+                                case 'DROP':
+
+                                  break;
+                              }
+                            },
                             itemBuilder: (context) {
                               return [
                                 PopupMenuItem(

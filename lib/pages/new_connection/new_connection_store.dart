@@ -1,6 +1,8 @@
 import 'package:dbclientapp/database/database.dart';
 import 'package:mobx/mobx.dart';
 
+import 'new_connection_constants.dart';
+
 part 'new_connection_store.g.dart';
 
 class NewConnectionStore = _NewConnectionStore with _$NewConnectionStore;
@@ -62,7 +64,7 @@ abstract class _NewConnectionStore with Store {
 
   @action
   void initForm([Connection connection]) {
-    this.connection = connection;
+    this.connection = connection.copyWith(vendor: POSTGRES_NAME);
   }
 
 

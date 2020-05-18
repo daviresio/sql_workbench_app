@@ -1,6 +1,9 @@
 import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/query_store.dart';
 import 'package:dbclientapp/pages/connections/connections_page.dart';
+import 'package:dbclientapp/pages/initial_screen/initial_screen_page.dart';
+import 'package:dbclientapp/pages/login/login_page.dart';
+import 'package:dbclientapp/pages/login/pages/auth_sms_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:flutter/material.dart';
@@ -57,12 +60,17 @@ class _MainAppState extends State<MainApp> {
       title: 'Postgres Client',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Color.fromRGBO(249, 249, 249, 1),
       ),
-      initialRoute: '/',
+//      initialRoute: '/',
+      initialRoute: LoginPage.routeName,
       routes: {
-        '/': (context) => ConnectionsPage(),
+        ConnectionsPage.routeName: (context) => ConnectionsPage(),
         NewConnectionPage.routeName: (context) =>  NewConnectionPage(),
         ConnectionHome.routeName: (context) =>  ConnectionHome(),
+        LoginPage.routeName: (context) =>  LoginPage(),
+        AuthSmsPage.routeName: (context) =>  AuthSmsPage(),
+        InitialScreenPage.routeName: (context) =>  InitialScreenPage(),
       },
     );
   }

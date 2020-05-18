@@ -60,6 +60,23 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
     }, _$itemsAtom, name: '${_$itemsAtom.name}_set');
   }
 
+  final _$originalItemsAtom = Atom(name: '_ViewRowStore.originalItems');
+
+  @override
+  Map<String, dynamic> get originalItems {
+    _$originalItemsAtom.context.enforceReadPolicy(_$originalItemsAtom);
+    _$originalItemsAtom.reportObserved();
+    return super.originalItems;
+  }
+
+  @override
+  set originalItems(Map<String, dynamic> value) {
+    _$originalItemsAtom.context.conditionallyRunInAction(() {
+      super.originalItems = value;
+      _$originalItemsAtom.reportChanged();
+    }, _$originalItemsAtom, name: '${_$originalItemsAtom.name}_set');
+  }
+
   final _$typesAtom = Atom(name: '_ViewRowStore.types');
 
   @override
@@ -111,6 +128,16 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
   }
 
   @override
+  void setOriginalValue(Map<String, dynamic> value) {
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    try {
+      return super.setOriginalValue(value);
+    } finally {
+      _$_ViewRowStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setItems(Map<String, dynamic> value) {
     final _$actionInfo = _$_ViewRowStoreActionController.startAction();
     try {
@@ -133,7 +160,7 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
   @override
   String toString() {
     final string =
-        'isNewRecord: ${isNewRecord.toString()},editMode: ${editMode.toString()},items: ${items.toString()},types: ${types.toString()}';
+        'isNewRecord: ${isNewRecord.toString()},editMode: ${editMode.toString()},items: ${items.toString()},originalItems: ${originalItems.toString()},types: ${types.toString()}';
     return '{$string}';
   }
 }

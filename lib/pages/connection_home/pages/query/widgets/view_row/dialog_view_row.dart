@@ -101,8 +101,12 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
                   try {
                     var conn =  await Database.instance.connectionDao.find(connectionId);
                     var connection = ConnectionModel.fromTable(conn);
-                    DeleteQueryModel deleteQueryModel = DeleteQueryModel(data: _controller.items, types: types, connection: connection);
-                    await QueryRepository().updateRecord(deleteQueryModel);
+                    DeleteQueryModel deleteQueryModel = DeleteQueryModel(data: _controller.getParsedValues(), types: types, connection: connection);
+                    if(_controller.isNewRecord) {
+                      await QueryRepository().saveRecord(deleteQueryModel);
+                    } else {
+                      await QueryRepository().updateRecord(deleteQueryModel);
+                    }
                     //TODO pesquisar ultima query pesquisada apos atualizar
                     Navigator.of(context).pop(true);
                   } catch(e) {
@@ -174,6 +178,12 @@ class GetInput extends StatelessWidget {
           ),
           style: TextStyle(fontSize: 14.0, color: (enabled ? Colors.black : Colors.black54)),
         );
+        break;
+      case 'bool':
+        inputWidget = Container();
+        break;
+      case 'timestamp':
+        inputWidget = Container();
         break;
       default:
         inputWidget = Container();

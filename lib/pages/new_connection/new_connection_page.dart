@@ -2,7 +2,6 @@ import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/database_info_model.dart';
 import 'package:dbclientapp/model/route_arguments.dart';
-import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
@@ -68,26 +67,27 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0,),
-                   ContainerFormItem(
-                        child: Observer(
-                          builder: (_) => DropdownButton(
-                              hint: Text('Vendor'),
-                              isExpanded: true,
-                              value: _controller.connection.vendor as String,
-                              items: () {
-                                var items = databaseImages.keys.map((String value) {
-                                  return DropdownMenuItem(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                });
-                                return List<DropdownMenuItem<String>>.from(items);
-                              }(),
-                              onChanged: _controller.setVendor
-                          ),
-                        ),
-                   ),
+//TODO descomentar so quandofor dar suporte a mais bancos
+//                    SizedBox(height: 20.0,),
+//                   ContainerFormItem(
+//                        child: Observer(
+//                          builder: (_) => DropdownButton(
+//                              hint: Text('Vendor'),
+//                              isExpanded: true,
+//                              value: _controller.connection.vendor as String,
+//                              items: () {
+//                                var items = databaseImages.keys.map((String value) {
+//                                  return DropdownMenuItem(
+//                                    value: value,
+//                                    child: Text(value),
+//                                  );
+//                                });
+//                                return List<DropdownMenuItem<String>>.from(items);
+//                              }(),
+//                              onChanged: _controller.setVendor
+//                          ),
+//                        ),
+//                   ),
                     SizedBox(height: 20.0,),
                     ContainerFormItem(
                       child: TextFormField(

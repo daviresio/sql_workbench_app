@@ -19,7 +19,7 @@ class QueryRepository {
 
   Future<dynamic> deleteRecord(DeleteQueryModel deleteQueryModel) async {
     try {
-      Response<dynamic> result = await postRequest(endpoint: '/postgres/delete', body: deleteQueryModel.toJson());
+      await postRequest(endpoint: '/postgres/delete', body: deleteQueryModel.toJson());
       return true;
     } catch (e) {
       rethrow;
@@ -29,9 +29,7 @@ class QueryRepository {
 
   Future<dynamic> updateRecord(DeleteQueryModel deleteQueryModel) async {
     try {
-      print(deleteQueryModel.toString());
-      Response<dynamic> result = await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
-     print(result);
+      await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
       return true;
     } catch (e) {
       rethrow;
@@ -40,9 +38,7 @@ class QueryRepository {
 
   Future<dynamic> saveRecord(DeleteQueryModel deleteQueryModel) async {
     try {
-      print(deleteQueryModel.toString());
-      Response<dynamic> result = await postRequest(endpoint: '/postgres/update', body: deleteQueryModel.toJson());
-     print(result);
+      await postRequest(endpoint: '/postgres/save', body: deleteQueryModel.toJson());
       return true;
     } catch (e) {
       rethrow;

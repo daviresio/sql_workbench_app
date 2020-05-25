@@ -2,13 +2,13 @@ import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
 import 'package:dbclientapp/pages/connection_home/pages/query/query_store.dart';
 import 'package:dbclientapp/pages/connections/connections_page.dart';
 import 'package:dbclientapp/pages/initial_screen/initial_screen_page.dart';
-import 'package:dbclientapp/pages/login/login_page.dart';
-import 'package:dbclientapp/pages/login/pages/auth_sms_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'pages/auth/auth_sms_page.dart';
+import 'pages/auth/login_page.dart';
 import 'pages/connection_home/pages/info_database/info_database_store.dart';
 import 'pages/connection_home/pages/history/history_store.dart';
 import 'pages/connection_home/pages/favorite/favorite_store.dart';
@@ -61,9 +61,11 @@ class _MainAppState extends State<MainApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Color.fromRGBO(249, 249, 249, 1),
+          fontFamily: 'Balsamiq Sans'
       ),
 //      initialRoute: '/',
-      initialRoute: LoginPage.routeName,
+//      initialRoute: LoginPage.routeName,
+    initialRoute: InitialScreenPage.routeName,
       routes: {
         ConnectionsPage.routeName: (context) => ConnectionsPage(),
         NewConnectionPage.routeName: (context) =>  NewConnectionPage(),

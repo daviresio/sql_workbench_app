@@ -1,10 +1,9 @@
-import 'package:dbclientapp/model/error_model.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
-//final String BASE_URL = 'https://1vhggv59f4.execute-api.us-east-1.amazonaws.com/dev';
-final String BASE_URL = 'http://10.0.3.2:3000/dev';
+final String BASE_URL = 'https://1vhggv59f4.execute-api.us-east-1.amazonaws.com/dev';
+//final String BASE_URL = 'http://10.0.3.2:3000/dev';
 
 BaseOptions _baseOptions = BaseOptions(
   connectTimeout: 10 * 1000,
@@ -38,10 +37,13 @@ Future<dynamic> postRequest({String endpoint, body, BuildContext context}) async
       if(e.response != null && e.response.data != null) {
         erro = e.response.data['message'];
       }
+      if(erro == null) {
+        erro = e.response.statusMessage;
+      }
     }
 
     if(context != null) {
-      Dialogs.errorDialog(erro, context);
+      Dialogs.errorDialog(erro ??= 'A error ocurred', context);
     }
 
     throw erro;

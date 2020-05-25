@@ -169,6 +169,26 @@ mixin _$QueryStore on _QueryStore, Store {
     }, _$lastQueryExecutedAtom, name: '${_$lastQueryExecutedAtom.name}_set');
   }
 
+  final _$currentScrolledPositionAtom =
+      Atom(name: '_QueryStore.currentScrolledPosition');
+
+  @override
+  double get currentScrolledPosition {
+    _$currentScrolledPositionAtom.context
+        .enforceReadPolicy(_$currentScrolledPositionAtom);
+    _$currentScrolledPositionAtom.reportObserved();
+    return super.currentScrolledPosition;
+  }
+
+  @override
+  set currentScrolledPosition(double value) {
+    _$currentScrolledPositionAtom.context.conditionallyRunInAction(() {
+      super.currentScrolledPosition = value;
+      _$currentScrolledPositionAtom.reportChanged();
+    }, _$currentScrolledPositionAtom,
+        name: '${_$currentScrolledPositionAtom.name}_set');
+  }
+
   final _$fetchQueryAsyncAction = AsyncAction('fetchQuery');
 
   @override
@@ -229,9 +249,19 @@ mixin _$QueryStore on _QueryStore, Store {
   }
 
   @override
+  dynamic setCurrentScrolledPosition(double value) {
+    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    try {
+      return super.setCurrentScrolledPosition(value);
+    } finally {
+      _$_QueryStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     final string =
-        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},lastQueryExecuted: ${lastQueryExecuted.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
+        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},lastQueryExecuted: ${lastQueryExecuted.toString()},currentScrolledPosition: ${currentScrolledPosition.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
     return '{$string}';
   }
 }

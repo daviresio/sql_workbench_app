@@ -6,7 +6,6 @@ import 'package:dbclientapp/network/request.dart';
 import 'package:dbclientapp/pages/connection_home/connection_home_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_constants.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
-import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
 import 'package:dbclientapp/util/string_util.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class ConnectionsPage extends StatefulWidget {
 
 class _ConnectionsPageState extends State<ConnectionsPage> {
 
-  GlobalKey<State> _globalKey = GlobalKey<State>();
   final _connectionsDao = Database.instance.connectionDao;
 
   @override
@@ -41,6 +39,36 @@ class _ConnectionsPageState extends State<ConnectionsPage> {
           stream: _connectionsDao.list(),
           initialData: [],
           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+            if(!snapshot.hasData || snapshot.data.length == 0) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('No databases connection found', style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold, color: Colors.black87.withOpacity(.7)), textAlign: TextAlign.center,),
+                    Container(
+                      width: 280.0,
+                      height: 280.0,
+                      margin: EdgeInsets.symmetric(vertical: 30.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(200.0),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 8.0,
+                            color: Colors.grey[200],
+                          ),
+                        ],
+                      ),
+                      child: Center(child: Image.asset('assets/images/no-database.png', width: 160.0,)),
+                    ),
+                    Text('Tap on plus button to add a database to begin use the app and manager your database', textAlign: TextAlign.center,),
+                  ],
+                ),
+              );
+            }
+
             return ListView.builder(
               itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {

@@ -10,7 +10,7 @@ class NewConnectionStore = _NewConnectionStore with _$NewConnectionStore;
 abstract class _NewConnectionStore with Store {
 
   @observable
-  dynamic connection = Connection(ssh: false);
+  dynamic connection = Connection(ssh: false, vendor: POSTGRES_NAME);
 
   @action
   void setId(int value) {
@@ -24,7 +24,7 @@ abstract class _NewConnectionStore with Store {
 
   @action
   void setVendor(String value) {
-    connection = connection.copyWith(vendor: value);
+    connection = connection.copyWith(vendor: POSTGRES_NAME);
   }
 
   @action

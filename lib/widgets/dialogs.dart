@@ -33,7 +33,7 @@ class Dialogs {
   static Future errorDialog(String error, BuildContext context) {
     return showDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: Text('Erro'),
+        title: Text('Error', style: TextStyle(color: Colors.redAccent),),
         content: Text(error),
         actions: <Widget>[
           FlatButton(onPressed: () => Navigator.of(context).pop(),

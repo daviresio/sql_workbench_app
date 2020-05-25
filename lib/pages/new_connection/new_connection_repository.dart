@@ -13,7 +13,7 @@ class NewConnectionRepository {
           body: connectionModel.toJson());
       return DatabaseInfoModel.fromJson(result.data);
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
   }
 }

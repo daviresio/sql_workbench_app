@@ -2,12 +2,13 @@ import 'package:dbclientapp/config/icons_for_my_app_icons.dart';
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/model/database_info_model.dart';
 import 'package:dbclientapp/model/route_arguments.dart';
-import 'package:dbclientapp/pages/new_connection/new_connection_repository.dart';
+import 'package:dbclientapp/network/request.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
-import 'package:dbclientapp/widgets/dialogs.dart';
+import 'package:dbclientapp/widgets/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:flushbar/flushbar.dart';
+
 
 class NewConnectionPage extends StatefulWidget {
 
@@ -18,8 +19,6 @@ class NewConnectionPage extends StatefulWidget {
 }
 
 class _NewConnectionPageState extends State<NewConnectionPage> {
-
-  final GlobalKey<State> _globalKey = GlobalKey<State>();
 
   TextEditingController _nameEditingController = TextEditingController();
   TextEditingController _hostNameEditingController = TextEditingController();
@@ -59,13 +58,11 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ContainerFormItem(
-                      child: Observer(
-                        builder: (_) => TextFormField(
+                      child: TextFormField(
                           decoration: TextFieldFormItemDecoraction('Name', IconsForMyApp.subtitles),
                           onChanged: _controller.setName,
                           controller: _nameEditingController,
                         ),
-                      ),
                     ),
 //TODO descomentar so quandofor dar suporte a mais bancos
 //                    SizedBox(height: 20.0,),
@@ -165,20 +162,9 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       child: Text('TEST', style: TextStyle(color: Colors.green),),
                       onPressed: () async {
                         try {
-                          Dialogs.showLoadingDialog(context, _globalKey);
-                          await NewConnectionRepository().connectDB(_controller.connection).whenComplete(() {
-                            Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-                          });
-                          _scaffoldKey.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text('Test Connection Succesfull!', style: TextStyle(color: Colors.white),),
-                            ),
-                          );
-                        } catch(e) {
-                          print(e);
-//                          Dialogs.errorDialog(e, true, context);
-                        }
-
+                          await Request().connectDB(_controller.connection, context);
+                          ShowFlushbar.success(message: 'Test Connection Succesfull!',).show(context);
+                        } catch(e) {}
                       },
                     ),
                     SizedBox(width: 10.0,),
@@ -186,11 +172,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                       child: Text('SAVE', style: TextStyle(color: Colors.blueAccent),),
                       onPressed: () async {
                         try {
-                          Dialogs.showLoadingDialog(context, _globalKey);
-
-                          DatabaseInfoModel result = await NewConnectionRepository().connectDB(_controller.connection).whenComplete(() {
-                            Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
-                          });
+                          DatabaseInfoModel result = await Request().connectDB(_controller.connection, context);
                           var dataBaseInfo = result.toTable();
                           if(_controller.connection.id == null || _controller.connection.id == 0) {
                           var databaseInfoId = await Database.instance.databaseInfoDao.add(dataBaseInfo);
@@ -200,10 +182,7 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                             await Database.instance.databaseInfoDao.edit(dataBaseInfo.copyWith(id: _controller.connection.databaseInfoId));
                           }
                           Navigator.of(context).pop();
-                        } catch(e) {
-                          print(e);
-                          Dialogs.errorDialog(e, context);
-                        }
+                        } catch(e) {}
                       },
                     ),
                   ],

@@ -37,7 +37,6 @@ abstract class _QueryStore with Store {
   fetchQuery(QueryModel query) async {
     //position 0 is the value and position 1 is the types
     List<dynamic> result = await QueryRepository().execQuery(query);
-    print(result.toString());
     types = List<TypesResponseQueryModel>.from(result[1]);
     columns = types.map((v) => v.columnName).toList();
     rows = List<dynamic>.from(result[0]);
@@ -72,7 +71,6 @@ abstract class _QueryStore with Store {
     rows.sort((a, b) => a[columns[columnSortIndex]].toString().compareTo(b[columns[columnSortIndex]].toString()));
     if(!columnSortAsc) {
       rows = List<dynamic>.from(rows.reversed);
-      print(rows.toString());
     }
 
   }
@@ -83,6 +81,15 @@ abstract class _QueryStore with Store {
   @action
   setLastQueryExecuted(String value) {
     lastQueryExecuted = value;
+  }
+
+  @observable
+  double currentScrolledPosition = 0.0;
+
+  @action
+  setCurrentScrolledPosition(double value) {
+    currentScrolledPosition = value;
+    onTop = value < 10;
   }
 
 }

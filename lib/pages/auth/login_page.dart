@@ -1,6 +1,9 @@
-import 'package:dbclientapp/pages/login/pages/auth_sms_page.dart';
-import 'package:devicelocale/devicelocale.dart';
+import 'package:dbclientapp/pages/auth/auth_sms_page.dart';
+import 'package:dbclientapp/pages/connections/connections_page.dart';
+import 'package:dbclientapp/pages/initial_screen/initial_screen_page.dart';
 import 'package:flutter/material.dart';
+
+import 'service/base_auth.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -12,14 +15,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  getLocations() async {
-    print(await Devicelocale.currentLocale);
-  }
-
   @override
   Widget build(BuildContext context) {
-
- getLocations();
 
     return Scaffold(
         body: Center(
@@ -28,14 +25,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                //TODO colocar a imagem aqui no lugar
                 Container(
                   width: 220.0,
                   height: 220.0,
                   decoration: BoxDecoration(
-                    color: Colors.deepPurpleAccent,
-                    borderRadius: BorderRadius.circular(200.0)
+                    borderRadius: BorderRadius.circular(200.0),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 1.0,
+                        color: Colors.grey[200],
+                      )
+                    ],
                   ),
+                  child: Center(child: Image.asset('assets/images/get_started.png', width: 160.0,)),
                 ),
                 Column(
                   children: <Widget>[
@@ -47,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       'Never a better time than now to start managing all your postgresql databases with ease',
                       style: TextStyle(color: Colors.black54, fontSize: 16.0),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -75,8 +78,9 @@ class _LoginPageState extends State<LoginPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
-                        onPressed: () {
-
+                        onPressed: () async {
+                          await Auth().anonimousSignIn();
+                          Navigator.of(context).pushReplacementNamed(ConnectionsPage.routeName);
                         },
                       ),
                     ),

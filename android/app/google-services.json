@@ -15,7 +15,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "64998542656-rp1vco2mkundgpts187k2tbc3jhssl03.apps.googleusercontent.com",
+          "client_id": "64998542656-55ti9vij5mp5qng9ogsb1anc8tg9ljql.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.resio.dbclientapp",
+            "certificate_hash": "eca7b70592d57a06a85f4150131f907d5468ef5e"
+          }
+        },
+        {
+          "client_id": "64998542656-ko9li1g3su1v5q1i1a5eiha4hjm2lp1u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.resio.dbclientapp",
+            "certificate_hash": "6a76687cb25291abdbf0cfcb32d72ba78aa04231"
+          }
+        },
+        {
+          "client_id": "64998542656-9ir15uu6980gkoo09q6kvo2b999fpahe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.resio.dbclientapp",

@@ -13,7 +13,7 @@ class Request {
       var result = await postRequest(endpoint: '/${databaseUrl[connection.vendor]}/database-info', body: connectionModel.toJson(), context: context);
       return DatabaseInfoModel.fromJson(result.data);
     } catch (e) {
-      throw e.toString();
+      rethrow;
     }
   }
 

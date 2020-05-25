@@ -11,7 +11,7 @@ description: A database client app.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.2+2
+version: 1.0.3+3
 
 environment:
   sdk: ">=2.2.0 <3.0.0"
@@ -40,6 +40,8 @@ dependencies:
   pin_code_fields: ^3.0.0
   sms_autofill: ^1.2.1
   devicelocale: ^0.2.3
+  flushbar: ^1.10.4
+  emojis: ^0.8.1
   flutter:
     sdk: flutter
 
@@ -75,6 +77,44 @@ flutter:
     - family:  IconsForMyApp
       fonts:
         - asset: assets/font_icons/IconsForMyApp.ttf
+    - family:  Balsamiq Sans
+      fonts:
+        - asset: assets/fonts/Balsamiq_Sans/BalsamiqSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Balsamiq_Sans/BalsamiqSans-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/Balsamiq_Sans/BalsamiqSans-Italic.ttf
+          weight: 700
+    - family:  Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Roboto/Roboto-ThinItalic.ttf
+          weight: 100
+          style: italic
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Roboto/Roboto-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Roboto/Roboto-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/Roboto/Roboto-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Roboto/Roboto-BlackItalic.ttf
+          weight: 900
+          style: italic
 
   assets:
     - assets/images/

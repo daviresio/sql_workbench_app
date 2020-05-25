@@ -6,6 +6,7 @@ import 'package:dbclientapp/pages/connection_home/pages/query/query_repository.d
 import 'package:dbclientapp/pages/connection_home/pages/query/widgets/view_row/view_row_store.dart';
 import 'package:dbclientapp/util/string_util.dart';
 import 'package:dbclientapp/widgets/dialogs.dart';
+import 'package:dbclientapp/widgets/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -52,8 +53,7 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
                         ),
                         trailing: IconButton(icon: Icon(Icons.content_copy), onPressed: () {
                             Clipboard.setData(ClipboardData(text: StringUtil.extractMapFieldTostring(values, keys[index])));
-                          //TODO exibir flushbar apos o registro ser copiado
-                          //ShowFlushbar.copied(context);
+                          ShowFlushbar.copied().show(context);
                         }),
                       ),
                     );
@@ -89,8 +89,7 @@ Future<dynamic> showViewDialog({BuildContext context, Map<String, dynamic> item,
           FlatButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: item.toString()));
-              //TODO exibir flushbar apos o registro ser copiado
-              //ShowFlushbar.copied(context);
+              ShowFlushbar.copied().show(context);
             },
             child: Text('COPY'),
           ),

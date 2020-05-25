@@ -98,13 +98,16 @@ class _QueryPageState extends State<QueryPage> {
         await _controller.fetchQuery(query).whenComplete(() {
           Navigator.of(_globalKey.currentContext, rootNavigator: true).pop();
           FocusScope.of(context).requestFocus(new FocusNode());
-
-          if(_controller.rows.length > 0) _scrollToBottom();
-
-          _saveQuery(QuerySaved(query: value, databaseInfoId: widget.databaseInfoId));
         });
 
         _controller.setLastQueryExecuted(value);
+
+        if(_controller.rows.length > 0) {
+          //TODO ANALISAR E DEPOIS DECIDIR SE `E MELHOR SALVAR OU NAO NO HISTORICO QUERYS QUE NAO TENHAM LINHAS RETORNADAS
+//          _saveQuery(QuerySaved(query: value, databaseInfoId: widget.databaseInfoId));
+          await Future.delayed(Duration(milliseconds: 500));
+          _scrollToBottom();
+        }
 
       } catch(e) {
         Dialogs.errorDialog(e, context);
@@ -203,83 +206,82 @@ class _QueryPageState extends State<QueryPage> {
               if(_controller.columns.length == 0) return Container();
 
 
-              return Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight,
-                  ),
-                  Container(
-                    height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - 40,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+              return Container(
+                height: MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - 20,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: <Widget>[
+                    Container(
                       child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-                            child: Observer(
-                              builder: (_) {
-                                if(_controller.rows.length == 0 && _controller.lastQueryExecuted == '') return Container();
+                        scrollDirection: Axis.vertical,
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
+                              child: Observer(
+                                builder: (_) {
+                                  if(_controller.rows.length == 0 && _controller.lastQueryExecuted == '') return Container();
 
-                                if(_controller.rows.length == 0 && _controller.lastQueryExecuted != '') return Center(
-                                    child:Text(
-                                        'This query return empty result',
-                                      style: TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 22.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ));
+                                  if(_controller.rows.length == 0 && _controller.lastQueryExecuted != '') return Center(
+                                      child:Text(
+                                          'This query return empty result',
+                                        style: TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 22.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ));
 
-                                return PaginatedDataTable(
-                                  sortColumnIndex: _controller.columnSortIndex,
-                                  sortAscending: _controller.columnSortAsc,
-                                  columns: _controller.columns.map((value) =>
-                                      DataColumn(label: Text(value),
-                                          numeric: value.runtimeType == int ||
-                                              value.runtimeType == double,
-                                          onSort: _controller.changeTableSort))
-                                      .toList(),
-                                  header: Container(),
-                                  source: QueryResultTable(_controller, showDialogViewRow),
-                                  rowsPerPage: _controller.rows.length < 50 ? _controller.rows.length : 50,
-                                  availableRowsPerPage: [25, 50, 75, 100],
-                                );
-                              },
+                                  return PaginatedDataTable(
+                                    sortColumnIndex: _controller.columnSortIndex,
+                                    sortAscending: _controller.columnSortAsc,
+                                    columns: _controller.columns.map((value) =>
+                                        DataColumn(label: Text(value),
+                                            numeric: value.runtimeType == int ||
+                                                value.runtimeType == double,
+                                            onSort: _controller.changeTableSort))
+                                        .toList(),
+                                    header: Container(),
+                                    source: QueryResultTable(_controller, showDialogViewRow),
+                                    rowsPerPage: _controller.rows.length < 50 ? _controller.rows.length : 50,
+                                    availableRowsPerPage: [25, 50, 75, 100],
+                                  );
+                                },
+                              ),
+                            )
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: (MediaQuery.of(context).size.width / 2) - 20.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 3.0,
                             ),
-                          )
+                          ],
+                        ),
+                        child: Observer(
+                          builder: (_) => _controller.rows.length > 0 ? IconButton(
+                            icon: _controller.onTop ? Icon(Icons.keyboard_arrow_up) : Icon(Icons.keyboard_arrow_down),
+                            onPressed: () {
+                              if(_controller.onTop) {
+                                _scrollToBottom();
+                              } else {
+                                _scrollToTop();
+                              }
+                            },
+                          ) : Container(),
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: (MediaQuery.of(context).size.width / 2) - 20.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 3.0,
-                          ),
-                        ],
-                      ),
-                      child: Observer(
-                        builder: (_) => _controller.rows.length > 0 ? IconButton(
-                          icon: _controller.onTop ? Icon(Icons.keyboard_arrow_up) : Icon(Icons.keyboard_arrow_down),
-                          onPressed: () {
-                            if(_controller.onTop) {
-                              _scrollToBottom();
-                            } else {
-                              _scrollToTop();
-                            }
-                          },
-                        ) : Container(),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           )

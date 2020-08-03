@@ -6,92 +6,82 @@ part of 'view_row_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ViewRowStore on _ViewRowStore, Store {
   final _$isNewRecordAtom = Atom(name: '_ViewRowStore.isNewRecord');
 
   @override
   bool get isNewRecord {
-    _$isNewRecordAtom.context.enforceReadPolicy(_$isNewRecordAtom);
-    _$isNewRecordAtom.reportObserved();
+    _$isNewRecordAtom.reportRead();
     return super.isNewRecord;
   }
 
   @override
   set isNewRecord(bool value) {
-    _$isNewRecordAtom.context.conditionallyRunInAction(() {
+    _$isNewRecordAtom.reportWrite(value, super.isNewRecord, () {
       super.isNewRecord = value;
-      _$isNewRecordAtom.reportChanged();
-    }, _$isNewRecordAtom, name: '${_$isNewRecordAtom.name}_set');
+    });
   }
 
   final _$editModeAtom = Atom(name: '_ViewRowStore.editMode');
 
   @override
   bool get editMode {
-    _$editModeAtom.context.enforceReadPolicy(_$editModeAtom);
-    _$editModeAtom.reportObserved();
+    _$editModeAtom.reportRead();
     return super.editMode;
   }
 
   @override
   set editMode(bool value) {
-    _$editModeAtom.context.conditionallyRunInAction(() {
+    _$editModeAtom.reportWrite(value, super.editMode, () {
       super.editMode = value;
-      _$editModeAtom.reportChanged();
-    }, _$editModeAtom, name: '${_$editModeAtom.name}_set');
+    });
   }
 
   final _$itemsAtom = Atom(name: '_ViewRowStore.items');
 
   @override
   Map<String, dynamic> get items {
-    _$itemsAtom.context.enforceReadPolicy(_$itemsAtom);
-    _$itemsAtom.reportObserved();
+    _$itemsAtom.reportRead();
     return super.items;
   }
 
   @override
   set items(Map<String, dynamic> value) {
-    _$itemsAtom.context.conditionallyRunInAction(() {
+    _$itemsAtom.reportWrite(value, super.items, () {
       super.items = value;
-      _$itemsAtom.reportChanged();
-    }, _$itemsAtom, name: '${_$itemsAtom.name}_set');
+    });
   }
 
   final _$originalItemsAtom = Atom(name: '_ViewRowStore.originalItems');
 
   @override
   Map<String, dynamic> get originalItems {
-    _$originalItemsAtom.context.enforceReadPolicy(_$originalItemsAtom);
-    _$originalItemsAtom.reportObserved();
+    _$originalItemsAtom.reportRead();
     return super.originalItems;
   }
 
   @override
   set originalItems(Map<String, dynamic> value) {
-    _$originalItemsAtom.context.conditionallyRunInAction(() {
+    _$originalItemsAtom.reportWrite(value, super.originalItems, () {
       super.originalItems = value;
-      _$originalItemsAtom.reportChanged();
-    }, _$originalItemsAtom, name: '${_$originalItemsAtom.name}_set');
+    });
   }
 
   final _$typesAtom = Atom(name: '_ViewRowStore.types');
 
   @override
   List<TypesResponseQueryModel> get types {
-    _$typesAtom.context.enforceReadPolicy(_$typesAtom);
-    _$typesAtom.reportObserved();
+    _$typesAtom.reportRead();
     return super.types;
   }
 
   @override
   set types(List<TypesResponseQueryModel> value) {
-    _$typesAtom.context.conditionallyRunInAction(() {
+    _$typesAtom.reportWrite(value, super.types, () {
       super.types = value;
-      _$typesAtom.reportChanged();
-    }, _$typesAtom, name: '${_$typesAtom.name}_set');
+    });
   }
 
   final _$_ViewRowStoreActionController =
@@ -99,7 +89,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void setIsNewRecord(bool value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.setIsNewRecord');
     try {
       return super.setIsNewRecord(value);
     } finally {
@@ -109,7 +100,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void setEditMode(bool value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.setEditMode');
     try {
       return super.setEditMode(value);
     } finally {
@@ -119,7 +111,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void changeValue(String key, dynamic value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.changeValue');
     try {
       return super.changeValue(key, value);
     } finally {
@@ -129,7 +122,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void setOriginalValue(Map<String, dynamic> value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.setOriginalValue');
     try {
       return super.setOriginalValue(value);
     } finally {
@@ -139,7 +133,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void setItems(Map<String, dynamic> value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.setItems');
     try {
       return super.setItems(value);
     } finally {
@@ -149,7 +144,8 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   void setTypes(List<TypesResponseQueryModel> value) {
-    final _$actionInfo = _$_ViewRowStoreActionController.startAction();
+    final _$actionInfo = _$_ViewRowStoreActionController.startAction(
+        name: '_ViewRowStore.setTypes');
     try {
       return super.setTypes(value);
     } finally {
@@ -159,8 +155,12 @@ mixin _$ViewRowStore on _ViewRowStore, Store {
 
   @override
   String toString() {
-    final string =
-        'isNewRecord: ${isNewRecord.toString()},editMode: ${editMode.toString()},items: ${items.toString()},originalItems: ${originalItems.toString()},types: ${types.toString()}';
-    return '{$string}';
+    return '''
+isNewRecord: ${isNewRecord},
+editMode: ${editMode},
+items: ${items},
+originalItems: ${originalItems},
+types: ${types}
+    ''';
   }
 }

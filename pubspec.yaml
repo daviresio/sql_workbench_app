@@ -23,7 +23,7 @@ dependencies:
   provider:
   shared_preferences: ^0.5.6+3
   moor:
-  moor_ffi:
+  moor_ffi: any
   path:
   flutter_speed_dial: ^1.2.5
   path_provider: ^1.6.7

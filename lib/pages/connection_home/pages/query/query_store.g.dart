@@ -6,167 +6,150 @@ part of 'query_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$QueryStore on _QueryStore, Store {
   Computed<bool> _$isQueryInSingleTableComputed;
 
   @override
   bool get isQueryInSingleTable => (_$isQueryInSingleTableComputed ??=
-          Computed<bool>(() => super.isQueryInSingleTable))
+          Computed<bool>(() => super.isQueryInSingleTable,
+              name: '_QueryStore.isQueryInSingleTable'))
       .value;
 
   final _$querySavedAtom = Atom(name: '_QueryStore.querySaved');
 
   @override
   dynamic get querySaved {
-    _$querySavedAtom.context.enforceReadPolicy(_$querySavedAtom);
-    _$querySavedAtom.reportObserved();
+    _$querySavedAtom.reportRead();
     return super.querySaved;
   }
 
   @override
   set querySaved(dynamic value) {
-    _$querySavedAtom.context.conditionallyRunInAction(() {
+    _$querySavedAtom.reportWrite(value, super.querySaved, () {
       super.querySaved = value;
-      _$querySavedAtom.reportChanged();
-    }, _$querySavedAtom, name: '${_$querySavedAtom.name}_set');
+    });
   }
 
   final _$typesAtom = Atom(name: '_QueryStore.types');
 
   @override
   List<TypesResponseQueryModel> get types {
-    _$typesAtom.context.enforceReadPolicy(_$typesAtom);
-    _$typesAtom.reportObserved();
+    _$typesAtom.reportRead();
     return super.types;
   }
 
   @override
   set types(List<TypesResponseQueryModel> value) {
-    _$typesAtom.context.conditionallyRunInAction(() {
+    _$typesAtom.reportWrite(value, super.types, () {
       super.types = value;
-      _$typesAtom.reportChanged();
-    }, _$typesAtom, name: '${_$typesAtom.name}_set');
+    });
   }
 
   final _$columnsAtom = Atom(name: '_QueryStore.columns');
 
   @override
   List<String> get columns {
-    _$columnsAtom.context.enforceReadPolicy(_$columnsAtom);
-    _$columnsAtom.reportObserved();
+    _$columnsAtom.reportRead();
     return super.columns;
   }
 
   @override
   set columns(List<String> value) {
-    _$columnsAtom.context.conditionallyRunInAction(() {
+    _$columnsAtom.reportWrite(value, super.columns, () {
       super.columns = value;
-      _$columnsAtom.reportChanged();
-    }, _$columnsAtom, name: '${_$columnsAtom.name}_set');
+    });
   }
 
   final _$rowsAtom = Atom(name: '_QueryStore.rows');
 
   @override
   List<dynamic> get rows {
-    _$rowsAtom.context.enforceReadPolicy(_$rowsAtom);
-    _$rowsAtom.reportObserved();
+    _$rowsAtom.reportRead();
     return super.rows;
   }
 
   @override
   set rows(List<dynamic> value) {
-    _$rowsAtom.context.conditionallyRunInAction(() {
+    _$rowsAtom.reportWrite(value, super.rows, () {
       super.rows = value;
-      _$rowsAtom.reportChanged();
-    }, _$rowsAtom, name: '${_$rowsAtom.name}_set');
+    });
   }
 
   final _$renderedRowsAtom = Atom(name: '_QueryStore.renderedRows');
 
   @override
   List<dynamic> get renderedRows {
-    _$renderedRowsAtom.context.enforceReadPolicy(_$renderedRowsAtom);
-    _$renderedRowsAtom.reportObserved();
+    _$renderedRowsAtom.reportRead();
     return super.renderedRows;
   }
 
   @override
   set renderedRows(List<dynamic> value) {
-    _$renderedRowsAtom.context.conditionallyRunInAction(() {
+    _$renderedRowsAtom.reportWrite(value, super.renderedRows, () {
       super.renderedRows = value;
-      _$renderedRowsAtom.reportChanged();
-    }, _$renderedRowsAtom, name: '${_$renderedRowsAtom.name}_set');
+    });
   }
 
   final _$onTopAtom = Atom(name: '_QueryStore.onTop');
 
   @override
   bool get onTop {
-    _$onTopAtom.context.enforceReadPolicy(_$onTopAtom);
-    _$onTopAtom.reportObserved();
+    _$onTopAtom.reportRead();
     return super.onTop;
   }
 
   @override
   set onTop(bool value) {
-    _$onTopAtom.context.conditionallyRunInAction(() {
+    _$onTopAtom.reportWrite(value, super.onTop, () {
       super.onTop = value;
-      _$onTopAtom.reportChanged();
-    }, _$onTopAtom, name: '${_$onTopAtom.name}_set');
+    });
   }
 
   final _$columnSortIndexAtom = Atom(name: '_QueryStore.columnSortIndex');
 
   @override
   int get columnSortIndex {
-    _$columnSortIndexAtom.context.enforceReadPolicy(_$columnSortIndexAtom);
-    _$columnSortIndexAtom.reportObserved();
+    _$columnSortIndexAtom.reportRead();
     return super.columnSortIndex;
   }
 
   @override
   set columnSortIndex(int value) {
-    _$columnSortIndexAtom.context.conditionallyRunInAction(() {
+    _$columnSortIndexAtom.reportWrite(value, super.columnSortIndex, () {
       super.columnSortIndex = value;
-      _$columnSortIndexAtom.reportChanged();
-    }, _$columnSortIndexAtom, name: '${_$columnSortIndexAtom.name}_set');
+    });
   }
 
   final _$columnSortAscAtom = Atom(name: '_QueryStore.columnSortAsc');
 
   @override
   bool get columnSortAsc {
-    _$columnSortAscAtom.context.enforceReadPolicy(_$columnSortAscAtom);
-    _$columnSortAscAtom.reportObserved();
+    _$columnSortAscAtom.reportRead();
     return super.columnSortAsc;
   }
 
   @override
   set columnSortAsc(bool value) {
-    _$columnSortAscAtom.context.conditionallyRunInAction(() {
+    _$columnSortAscAtom.reportWrite(value, super.columnSortAsc, () {
       super.columnSortAsc = value;
-      _$columnSortAscAtom.reportChanged();
-    }, _$columnSortAscAtom, name: '${_$columnSortAscAtom.name}_set');
+    });
   }
 
   final _$lastQueryExecutedAtom = Atom(name: '_QueryStore.lastQueryExecuted');
 
   @override
   String get lastQueryExecuted {
-    _$lastQueryExecutedAtom.context.enforceReadPolicy(_$lastQueryExecutedAtom);
-    _$lastQueryExecutedAtom.reportObserved();
+    _$lastQueryExecutedAtom.reportRead();
     return super.lastQueryExecuted;
   }
 
   @override
   set lastQueryExecuted(String value) {
-    _$lastQueryExecutedAtom.context.conditionallyRunInAction(() {
+    _$lastQueryExecutedAtom.reportWrite(value, super.lastQueryExecuted, () {
       super.lastQueryExecuted = value;
-      _$lastQueryExecutedAtom.reportChanged();
-    }, _$lastQueryExecutedAtom, name: '${_$lastQueryExecutedAtom.name}_set');
+    });
   }
 
   final _$currentScrolledPositionAtom =
@@ -174,22 +157,19 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   double get currentScrolledPosition {
-    _$currentScrolledPositionAtom.context
-        .enforceReadPolicy(_$currentScrolledPositionAtom);
-    _$currentScrolledPositionAtom.reportObserved();
+    _$currentScrolledPositionAtom.reportRead();
     return super.currentScrolledPosition;
   }
 
   @override
   set currentScrolledPosition(double value) {
-    _$currentScrolledPositionAtom.context.conditionallyRunInAction(() {
+    _$currentScrolledPositionAtom
+        .reportWrite(value, super.currentScrolledPosition, () {
       super.currentScrolledPosition = value;
-      _$currentScrolledPositionAtom.reportChanged();
-    }, _$currentScrolledPositionAtom,
-        name: '${_$currentScrolledPositionAtom.name}_set');
+    });
   }
 
-  final _$fetchQueryAsyncAction = AsyncAction('fetchQuery');
+  final _$fetchQueryAsyncAction = AsyncAction('_QueryStore.fetchQuery');
 
   @override
   Future fetchQuery(QueryModel query) {
@@ -200,7 +180,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic setQuery(String value) {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo =
+        _$_QueryStoreActionController.startAction(name: '_QueryStore.setQuery');
     try {
       return super.setQuery(value);
     } finally {
@@ -210,7 +191,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic setOnTop(dynamic value) {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo =
+        _$_QueryStoreActionController.startAction(name: '_QueryStore.setOnTop');
     try {
       return super.setOnTop(value);
     } finally {
@@ -220,7 +202,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic changeTableSort(int position, bool asc) {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo = _$_QueryStoreActionController.startAction(
+        name: '_QueryStore.changeTableSort');
     try {
       return super.changeTableSort(position, asc);
     } finally {
@@ -230,7 +213,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic setRenderedRows() {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo = _$_QueryStoreActionController.startAction(
+        name: '_QueryStore.setRenderedRows');
     try {
       return super.setRenderedRows();
     } finally {
@@ -240,7 +224,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic setLastQueryExecuted(String value) {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo = _$_QueryStoreActionController.startAction(
+        name: '_QueryStore.setLastQueryExecuted');
     try {
       return super.setLastQueryExecuted(value);
     } finally {
@@ -250,7 +235,8 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   dynamic setCurrentScrolledPosition(double value) {
-    final _$actionInfo = _$_QueryStoreActionController.startAction();
+    final _$actionInfo = _$_QueryStoreActionController.startAction(
+        name: '_QueryStore.setCurrentScrolledPosition');
     try {
       return super.setCurrentScrolledPosition(value);
     } finally {
@@ -260,8 +246,18 @@ mixin _$QueryStore on _QueryStore, Store {
 
   @override
   String toString() {
-    final string =
-        'querySaved: ${querySaved.toString()},types: ${types.toString()},columns: ${columns.toString()},rows: ${rows.toString()},renderedRows: ${renderedRows.toString()},onTop: ${onTop.toString()},columnSortIndex: ${columnSortIndex.toString()},columnSortAsc: ${columnSortAsc.toString()},lastQueryExecuted: ${lastQueryExecuted.toString()},currentScrolledPosition: ${currentScrolledPosition.toString()},isQueryInSingleTable: ${isQueryInSingleTable.toString()}';
-    return '{$string}';
+    return '''
+querySaved: ${querySaved},
+types: ${types},
+columns: ${columns},
+rows: ${rows},
+renderedRows: ${renderedRows},
+onTop: ${onTop},
+columnSortIndex: ${columnSortIndex},
+columnSortAsc: ${columnSortAsc},
+lastQueryExecuted: ${lastQueryExecuted},
+currentScrolledPosition: ${currentScrolledPosition},
+isQueryInSingleTable: ${isQueryInSingleTable}
+    ''';
   }
 }

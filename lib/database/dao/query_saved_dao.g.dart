@@ -7,5 +7,5 @@ part of 'query_saved_dao.dart';
 // **************************************************************************
 
 mixin _$QuerySavedDaoMixin on DatabaseAccessor<Database> {
-  $QuerySavedsTable get querySaveds => db.querySaveds;
+  $QuerySavedsTable get querySaveds => attachedDatabase.querySaveds;
 }

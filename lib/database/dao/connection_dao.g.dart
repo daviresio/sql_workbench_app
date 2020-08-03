@@ -7,6 +7,6 @@ part of 'connection_dao.dart';
 // **************************************************************************
 
 mixin _$ConnectionDaoMixin on DatabaseAccessor<Database> {
-  $ConnectionsTable get connections => db.connections;
-  $DatabaseInfosTable get databaseInfos => db.databaseInfos;
+  $ConnectionsTable get connections => attachedDatabase.connections;
+  $DatabaseInfosTable get databaseInfos => attachedDatabase.databaseInfos;
 }

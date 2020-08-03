@@ -6,24 +6,22 @@ part of 'connection_home_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ConnectionHomeStore on _ConnectionHomeStore, Store {
   final _$idAtom = Atom(name: '_ConnectionHomeStore.id');
 
   @override
   int get id {
-    _$idAtom.context.enforceReadPolicy(_$idAtom);
-    _$idAtom.reportObserved();
+    _$idAtom.reportRead();
     return super.id;
   }
 
   @override
   set id(int value) {
-    _$idAtom.context.conditionallyRunInAction(() {
+    _$idAtom.reportWrite(value, super.id, () {
       super.id = value;
-      _$idAtom.reportChanged();
-    }, _$idAtom, name: '${_$idAtom.name}_set');
+    });
   }
 
   final _$connectionsWithInfoAtom =
@@ -31,19 +29,15 @@ mixin _$ConnectionHomeStore on _ConnectionHomeStore, Store {
 
   @override
   dynamic get connectionsWithInfo {
-    _$connectionsWithInfoAtom.context
-        .enforceReadPolicy(_$connectionsWithInfoAtom);
-    _$connectionsWithInfoAtom.reportObserved();
+    _$connectionsWithInfoAtom.reportRead();
     return super.connectionsWithInfo;
   }
 
   @override
   set connectionsWithInfo(dynamic value) {
-    _$connectionsWithInfoAtom.context.conditionallyRunInAction(() {
+    _$connectionsWithInfoAtom.reportWrite(value, super.connectionsWithInfo, () {
       super.connectionsWithInfo = value;
-      _$connectionsWithInfoAtom.reportChanged();
-    }, _$connectionsWithInfoAtom,
-        name: '${_$connectionsWithInfoAtom.name}_set');
+    });
   }
 
   final _$_ConnectionHomeStoreActionController =
@@ -51,7 +45,8 @@ mixin _$ConnectionHomeStore on _ConnectionHomeStore, Store {
 
   @override
   dynamic setConnectionsWithInfo(int id) {
-    final _$actionInfo = _$_ConnectionHomeStoreActionController.startAction();
+    final _$actionInfo = _$_ConnectionHomeStoreActionController.startAction(
+        name: '_ConnectionHomeStore.setConnectionsWithInfo');
     try {
       return super.setConnectionsWithInfo(id);
     } finally {
@@ -61,8 +56,9 @@ mixin _$ConnectionHomeStore on _ConnectionHomeStore, Store {
 
   @override
   String toString() {
-    final string =
-        'id: ${id.toString()},connectionsWithInfo: ${connectionsWithInfo.toString()}';
-    return '{$string}';
+    return '''
+id: ${id},
+connectionsWithInfo: ${connectionsWithInfo}
+    ''';
   }
 }

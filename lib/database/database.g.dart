@@ -65,6 +65,81 @@ class Connection extends DataClass implements Insertable<Connection> {
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String>(name);
+    }
+    if (!nullToAbsent || vendor != null) {
+      map['vendor'] = Variable<String>(vendor);
+    }
+    if (!nullToAbsent || host != null) {
+      map['host'] = Variable<String>(host);
+    }
+    if (!nullToAbsent || port != null) {
+      map['port'] = Variable<String>(port);
+    }
+    if (!nullToAbsent || databaseName != null) {
+      map['database_name'] = Variable<String>(databaseName);
+    }
+    if (!nullToAbsent || schema != null) {
+      map['schema'] = Variable<String>(schema);
+    }
+    if (!nullToAbsent || user != null) {
+      map['user'] = Variable<String>(user);
+    }
+    if (!nullToAbsent || password != null) {
+      map['password'] = Variable<String>(password);
+    }
+    if (!nullToAbsent || ssh != null) {
+      map['ssh'] = Variable<bool>(ssh);
+    }
+    if (!nullToAbsent || databaseInfoId != null) {
+      map['database_info_id'] = Variable<int>(databaseInfoId);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  ConnectionsCompanion toCompanion(bool nullToAbsent) {
+    return ConnectionsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      vendor:
+          vendor == null && nullToAbsent ? const Value.absent() : Value(vendor),
+      host: host == null && nullToAbsent ? const Value.absent() : Value(host),
+      port: port == null && nullToAbsent ? const Value.absent() : Value(port),
+      databaseName: databaseName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(databaseName),
+      schema:
+          schema == null && nullToAbsent ? const Value.absent() : Value(schema),
+      user: user == null && nullToAbsent ? const Value.absent() : Value(user),
+      password: password == null && nullToAbsent
+          ? const Value.absent()
+          : Value(password),
+      ssh: ssh == null && nullToAbsent ? const Value.absent() : Value(ssh),
+      databaseInfoId: databaseInfoId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(databaseInfoId),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
   factory Connection.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -102,37 +177,6 @@ class Connection extends DataClass implements Insertable<Connection> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
-  }
-
-  @override
-  ConnectionsCompanion createCompanion(bool nullToAbsent) {
-    return ConnectionsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      vendor:
-          vendor == null && nullToAbsent ? const Value.absent() : Value(vendor),
-      host: host == null && nullToAbsent ? const Value.absent() : Value(host),
-      port: port == null && nullToAbsent ? const Value.absent() : Value(port),
-      databaseName: databaseName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(databaseName),
-      schema:
-          schema == null && nullToAbsent ? const Value.absent() : Value(schema),
-      user: user == null && nullToAbsent ? const Value.absent() : Value(user),
-      password: password == null && nullToAbsent
-          ? const Value.absent()
-          : Value(password),
-      ssh: ssh == null && nullToAbsent ? const Value.absent() : Value(ssh),
-      databaseInfoId: databaseInfoId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(databaseInfoId),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
-    );
   }
 
   Connection copyWith(
@@ -274,6 +318,38 @@ class ConnectionsCompanion extends UpdateCompanion<Connection> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : databaseInfoId = Value(databaseInfoId);
+  static Insertable<Connection> custom({
+    Expression<int> id,
+    Expression<String> name,
+    Expression<String> vendor,
+    Expression<String> host,
+    Expression<String> port,
+    Expression<String> databaseName,
+    Expression<String> schema,
+    Expression<String> user,
+    Expression<String> password,
+    Expression<bool> ssh,
+    Expression<int> databaseInfoId,
+    Expression<DateTime> createdAt,
+    Expression<DateTime> updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (vendor != null) 'vendor': vendor,
+      if (host != null) 'host': host,
+      if (port != null) 'port': port,
+      if (databaseName != null) 'database_name': databaseName,
+      if (schema != null) 'schema': schema,
+      if (user != null) 'user': user,
+      if (password != null) 'password': password,
+      if (ssh != null) 'ssh': ssh,
+      if (databaseInfoId != null) 'database_info_id': databaseInfoId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
   ConnectionsCompanion copyWith(
       {Value<int> id,
       Value<String> name,
@@ -303,6 +379,71 @@ class ConnectionsCompanion extends UpdateCompanion<Connection> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (vendor.present) {
+      map['vendor'] = Variable<String>(vendor.value);
+    }
+    if (host.present) {
+      map['host'] = Variable<String>(host.value);
+    }
+    if (port.present) {
+      map['port'] = Variable<String>(port.value);
+    }
+    if (databaseName.present) {
+      map['database_name'] = Variable<String>(databaseName.value);
+    }
+    if (schema.present) {
+      map['schema'] = Variable<String>(schema.value);
+    }
+    if (user.present) {
+      map['user'] = Variable<String>(user.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    if (ssh.present) {
+      map['ssh'] = Variable<bool>(ssh.value);
+    }
+    if (databaseInfoId.present) {
+      map['database_info_id'] = Variable<int>(databaseInfoId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ConnectionsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('vendor: $vendor, ')
+          ..write('host: $host, ')
+          ..write('port: $port, ')
+          ..write('databaseName: $databaseName, ')
+          ..write('schema: $schema, ')
+          ..write('user: $user, ')
+          ..write('password: $password, ')
+          ..write('ssh: $ssh, ')
+          ..write('databaseInfoId: $databaseInfoId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -488,64 +629,66 @@ class $ConnectionsTable extends Connections
   @override
   final String actualTableName = 'connections';
   @override
-  VerificationContext validateIntegrity(ConnectionsCompanion d,
+  VerificationContext validateIntegrity(Insertable<Connection> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.name.present) {
+    if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
     }
-    if (d.vendor.present) {
+    if (data.containsKey('vendor')) {
+      context.handle(_vendorMeta,
+          vendor.isAcceptableOrUnknown(data['vendor'], _vendorMeta));
+    }
+    if (data.containsKey('host')) {
       context.handle(
-          _vendorMeta, vendor.isAcceptableValue(d.vendor.value, _vendorMeta));
+          _hostMeta, host.isAcceptableOrUnknown(data['host'], _hostMeta));
     }
-    if (d.host.present) {
+    if (data.containsKey('port')) {
       context.handle(
-          _hostMeta, host.isAcceptableValue(d.host.value, _hostMeta));
+          _portMeta, port.isAcceptableOrUnknown(data['port'], _portMeta));
     }
-    if (d.port.present) {
-      context.handle(
-          _portMeta, port.isAcceptableValue(d.port.value, _portMeta));
-    }
-    if (d.databaseName.present) {
+    if (data.containsKey('database_name')) {
       context.handle(
           _databaseNameMeta,
-          databaseName.isAcceptableValue(
-              d.databaseName.value, _databaseNameMeta));
+          databaseName.isAcceptableOrUnknown(
+              data['database_name'], _databaseNameMeta));
     }
-    if (d.schema.present) {
+    if (data.containsKey('schema')) {
+      context.handle(_schemaMeta,
+          schema.isAcceptableOrUnknown(data['schema'], _schemaMeta));
+    }
+    if (data.containsKey('user')) {
       context.handle(
-          _schemaMeta, schema.isAcceptableValue(d.schema.value, _schemaMeta));
+          _userMeta, user.isAcceptableOrUnknown(data['user'], _userMeta));
     }
-    if (d.user.present) {
-      context.handle(
-          _userMeta, user.isAcceptableValue(d.user.value, _userMeta));
-    }
-    if (d.password.present) {
+    if (data.containsKey('password')) {
       context.handle(_passwordMeta,
-          password.isAcceptableValue(d.password.value, _passwordMeta));
+          password.isAcceptableOrUnknown(data['password'], _passwordMeta));
     }
-    if (d.ssh.present) {
-      context.handle(_sshMeta, ssh.isAcceptableValue(d.ssh.value, _sshMeta));
+    if (data.containsKey('ssh')) {
+      context.handle(
+          _sshMeta, ssh.isAcceptableOrUnknown(data['ssh'], _sshMeta));
     }
-    if (d.databaseInfoId.present) {
+    if (data.containsKey('database_info_id')) {
       context.handle(
           _databaseInfoIdMeta,
-          databaseInfoId.isAcceptableValue(
-              d.databaseInfoId.value, _databaseInfoIdMeta));
+          databaseInfoId.isAcceptableOrUnknown(
+              data['database_info_id'], _databaseInfoIdMeta));
     } else if (isInserting) {
       context.missing(_databaseInfoIdMeta);
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     }
-    if (d.updatedAt.present) {
+    if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     }
     return context;
   }
@@ -556,51 +699,6 @@ class $ConnectionsTable extends Connections
   Connection map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return Connection.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(ConnectionsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.name.present) {
-      map['name'] = Variable<String, StringType>(d.name.value);
-    }
-    if (d.vendor.present) {
-      map['vendor'] = Variable<String, StringType>(d.vendor.value);
-    }
-    if (d.host.present) {
-      map['host'] = Variable<String, StringType>(d.host.value);
-    }
-    if (d.port.present) {
-      map['port'] = Variable<String, StringType>(d.port.value);
-    }
-    if (d.databaseName.present) {
-      map['database_name'] = Variable<String, StringType>(d.databaseName.value);
-    }
-    if (d.schema.present) {
-      map['schema'] = Variable<String, StringType>(d.schema.value);
-    }
-    if (d.user.present) {
-      map['user'] = Variable<String, StringType>(d.user.value);
-    }
-    if (d.password.present) {
-      map['password'] = Variable<String, StringType>(d.password.value);
-    }
-    if (d.ssh.present) {
-      map['ssh'] = Variable<bool, BoolType>(d.ssh.value);
-    }
-    if (d.databaseInfoId.present) {
-      map['database_info_id'] = Variable<int, IntType>(d.databaseInfoId.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.updatedAt.present) {
-      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
-    }
-    return map;
   }
 
   @override
@@ -655,6 +753,67 @@ class DatabaseInfo extends DataClass implements Insertable<DatabaseInfo> {
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || databases != null) {
+      map['databases'] = Variable<String>(databases);
+    }
+    if (!nullToAbsent || schemas != null) {
+      map['schemas'] = Variable<String>(schemas);
+    }
+    if (!nullToAbsent || tables != null) {
+      map['tables'] = Variable<String>(tables);
+    }
+    if (!nullToAbsent || views != null) {
+      map['views'] = Variable<String>(views);
+    }
+    if (!nullToAbsent || storeProcedures != null) {
+      map['store_procedures'] = Variable<String>(storeProcedures);
+    }
+    if (!nullToAbsent || functions != null) {
+      map['functions'] = Variable<String>(functions);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  DatabaseInfosCompanion toCompanion(bool nullToAbsent) {
+    return DatabaseInfosCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      databases: databases == null && nullToAbsent
+          ? const Value.absent()
+          : Value(databases),
+      schemas: schemas == null && nullToAbsent
+          ? const Value.absent()
+          : Value(schemas),
+      tables:
+          tables == null && nullToAbsent ? const Value.absent() : Value(tables),
+      views:
+          views == null && nullToAbsent ? const Value.absent() : Value(views),
+      storeProcedures: storeProcedures == null && nullToAbsent
+          ? const Value.absent()
+          : Value(storeProcedures),
+      functions: functions == null && nullToAbsent
+          ? const Value.absent()
+          : Value(functions),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
   factory DatabaseInfo.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -684,35 +843,6 @@ class DatabaseInfo extends DataClass implements Insertable<DatabaseInfo> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
-  }
-
-  @override
-  DatabaseInfosCompanion createCompanion(bool nullToAbsent) {
-    return DatabaseInfosCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      databases: databases == null && nullToAbsent
-          ? const Value.absent()
-          : Value(databases),
-      schemas: schemas == null && nullToAbsent
-          ? const Value.absent()
-          : Value(schemas),
-      tables:
-          tables == null && nullToAbsent ? const Value.absent() : Value(tables),
-      views:
-          views == null && nullToAbsent ? const Value.absent() : Value(views),
-      storeProcedures: storeProcedures == null && nullToAbsent
-          ? const Value.absent()
-          : Value(storeProcedures),
-      functions: functions == null && nullToAbsent
-          ? const Value.absent()
-          : Value(functions),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
-    );
   }
 
   DatabaseInfo copyWith(
@@ -816,6 +946,30 @@ class DatabaseInfosCompanion extends UpdateCompanion<DatabaseInfo> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
+  static Insertable<DatabaseInfo> custom({
+    Expression<int> id,
+    Expression<String> databases,
+    Expression<String> schemas,
+    Expression<String> tables,
+    Expression<String> views,
+    Expression<String> storeProcedures,
+    Expression<String> functions,
+    Expression<DateTime> createdAt,
+    Expression<DateTime> updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (databases != null) 'databases': databases,
+      if (schemas != null) 'schemas': schemas,
+      if (tables != null) 'tables': tables,
+      if (views != null) 'views': views,
+      if (storeProcedures != null) 'store_procedures': storeProcedures,
+      if (functions != null) 'functions': functions,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
   DatabaseInfosCompanion copyWith(
       {Value<int> id,
       Value<String> databases,
@@ -837,6 +991,55 @@ class DatabaseInfosCompanion extends UpdateCompanion<DatabaseInfo> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (databases.present) {
+      map['databases'] = Variable<String>(databases.value);
+    }
+    if (schemas.present) {
+      map['schemas'] = Variable<String>(schemas.value);
+    }
+    if (tables.present) {
+      map['tables'] = Variable<String>(tables.value);
+    }
+    if (views.present) {
+      map['views'] = Variable<String>(views.value);
+    }
+    if (storeProcedures.present) {
+      map['store_procedures'] = Variable<String>(storeProcedures.value);
+    }
+    if (functions.present) {
+      map['functions'] = Variable<String>(functions.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DatabaseInfosCompanion(')
+          ..write('id: $id, ')
+          ..write('databases: $databases, ')
+          ..write('schemas: $schemas, ')
+          ..write('tables: $tables, ')
+          ..write('views: $views, ')
+          ..write('storeProcedures: $storeProcedures, ')
+          ..write('functions: $functions, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -971,45 +1174,46 @@ class $DatabaseInfosTable extends DatabaseInfos
   @override
   final String actualTableName = 'database_infos';
   @override
-  VerificationContext validateIntegrity(DatabaseInfosCompanion d,
+  VerificationContext validateIntegrity(Insertable<DatabaseInfo> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.databases.present) {
+    if (data.containsKey('databases')) {
       context.handle(_databasesMeta,
-          databases.isAcceptableValue(d.databases.value, _databasesMeta));
+          databases.isAcceptableOrUnknown(data['databases'], _databasesMeta));
     }
-    if (d.schemas.present) {
+    if (data.containsKey('schemas')) {
       context.handle(_schemasMeta,
-          schemas.isAcceptableValue(d.schemas.value, _schemasMeta));
+          schemas.isAcceptableOrUnknown(data['schemas'], _schemasMeta));
     }
-    if (d.tables.present) {
+    if (data.containsKey('tables')) {
+      context.handle(_tablesMeta,
+          tables.isAcceptableOrUnknown(data['tables'], _tablesMeta));
+    }
+    if (data.containsKey('views')) {
       context.handle(
-          _tablesMeta, tables.isAcceptableValue(d.tables.value, _tablesMeta));
+          _viewsMeta, views.isAcceptableOrUnknown(data['views'], _viewsMeta));
     }
-    if (d.views.present) {
-      context.handle(
-          _viewsMeta, views.isAcceptableValue(d.views.value, _viewsMeta));
-    }
-    if (d.storeProcedures.present) {
+    if (data.containsKey('store_procedures')) {
       context.handle(
           _storeProceduresMeta,
-          storeProcedures.isAcceptableValue(
-              d.storeProcedures.value, _storeProceduresMeta));
+          storeProcedures.isAcceptableOrUnknown(
+              data['store_procedures'], _storeProceduresMeta));
     }
-    if (d.functions.present) {
+    if (data.containsKey('functions')) {
       context.handle(_functionsMeta,
-          functions.isAcceptableValue(d.functions.value, _functionsMeta));
+          functions.isAcceptableOrUnknown(data['functions'], _functionsMeta));
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     }
-    if (d.updatedAt.present) {
+    if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     }
     return context;
   }
@@ -1020,40 +1224,6 @@ class $DatabaseInfosTable extends DatabaseInfos
   DatabaseInfo map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return DatabaseInfo.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(DatabaseInfosCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.databases.present) {
-      map['databases'] = Variable<String, StringType>(d.databases.value);
-    }
-    if (d.schemas.present) {
-      map['schemas'] = Variable<String, StringType>(d.schemas.value);
-    }
-    if (d.tables.present) {
-      map['tables'] = Variable<String, StringType>(d.tables.value);
-    }
-    if (d.views.present) {
-      map['views'] = Variable<String, StringType>(d.views.value);
-    }
-    if (d.storeProcedures.present) {
-      map['store_procedures'] =
-          Variable<String, StringType>(d.storeProcedures.value);
-    }
-    if (d.functions.present) {
-      map['functions'] = Variable<String, StringType>(d.functions.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.updatedAt.present) {
-      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
-    }
-    return map;
   }
 
   @override
@@ -1100,6 +1270,55 @@ class QuerySaved extends DataClass implements Insertable<QuerySaved> {
           .mapFromDatabaseResponse(data['${effectivePrefix}updated_at']),
     );
   }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || query != null) {
+      map['query'] = Variable<String>(query);
+    }
+    if (!nullToAbsent || saved != null) {
+      map['saved'] = Variable<bool>(saved);
+    }
+    if (!nullToAbsent || databaseInfoId != null) {
+      map['database_info_id'] = Variable<int>(databaseInfoId);
+    }
+    if (!nullToAbsent || lastExecution != null) {
+      map['last_execution'] = Variable<DateTime>(lastExecution);
+    }
+    if (!nullToAbsent || createdAt != null) {
+      map['created_at'] = Variable<DateTime>(createdAt);
+    }
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    return map;
+  }
+
+  QuerySavedsCompanion toCompanion(bool nullToAbsent) {
+    return QuerySavedsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      query:
+          query == null && nullToAbsent ? const Value.absent() : Value(query),
+      saved:
+          saved == null && nullToAbsent ? const Value.absent() : Value(saved),
+      databaseInfoId: databaseInfoId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(databaseInfoId),
+      lastExecution: lastExecution == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastExecution),
+      createdAt: createdAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
+    );
+  }
+
   factory QuerySaved.fromJson(Map<String, dynamic> json,
       {ValueSerializer serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
@@ -1125,29 +1344,6 @@ class QuerySaved extends DataClass implements Insertable<QuerySaved> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
-  }
-
-  @override
-  QuerySavedsCompanion createCompanion(bool nullToAbsent) {
-    return QuerySavedsCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      query:
-          query == null && nullToAbsent ? const Value.absent() : Value(query),
-      saved:
-          saved == null && nullToAbsent ? const Value.absent() : Value(saved),
-      databaseInfoId: databaseInfoId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(databaseInfoId),
-      lastExecution: lastExecution == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lastExecution),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-      updatedAt: updatedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(updatedAt),
-    );
   }
 
   QuerySaved copyWith(
@@ -1231,6 +1427,26 @@ class QuerySavedsCompanion extends UpdateCompanion<QuerySaved> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
+  static Insertable<QuerySaved> custom({
+    Expression<int> id,
+    Expression<String> query,
+    Expression<bool> saved,
+    Expression<int> databaseInfoId,
+    Expression<DateTime> lastExecution,
+    Expression<DateTime> createdAt,
+    Expression<DateTime> updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (query != null) 'query': query,
+      if (saved != null) 'saved': saved,
+      if (databaseInfoId != null) 'database_info_id': databaseInfoId,
+      if (lastExecution != null) 'last_execution': lastExecution,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
   QuerySavedsCompanion copyWith(
       {Value<int> id,
       Value<String> query,
@@ -1248,6 +1464,47 @@ class QuerySavedsCompanion extends UpdateCompanion<QuerySaved> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (query.present) {
+      map['query'] = Variable<String>(query.value);
+    }
+    if (saved.present) {
+      map['saved'] = Variable<bool>(saved.value);
+    }
+    if (databaseInfoId.present) {
+      map['database_info_id'] = Variable<int>(databaseInfoId.value);
+    }
+    if (lastExecution.present) {
+      map['last_execution'] = Variable<DateTime>(lastExecution.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QuerySavedsCompanion(')
+          ..write('id: $id, ')
+          ..write('query: $query, ')
+          ..write('saved: $saved, ')
+          ..write('databaseInfoId: $databaseInfoId, ')
+          ..write('lastExecution: $lastExecution, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
   }
 }
 
@@ -1345,39 +1602,40 @@ class $QuerySavedsTable extends QuerySaveds
   @override
   final String actualTableName = 'query_saveds';
   @override
-  VerificationContext validateIntegrity(QuerySavedsCompanion d,
+  VerificationContext validateIntegrity(Insertable<QuerySaved> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
-    if (d.id.present) {
-      context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
     }
-    if (d.query.present) {
+    if (data.containsKey('query')) {
       context.handle(
-          _queryMeta, query.isAcceptableValue(d.query.value, _queryMeta));
+          _queryMeta, query.isAcceptableOrUnknown(data['query'], _queryMeta));
     }
-    if (d.saved.present) {
+    if (data.containsKey('saved')) {
       context.handle(
-          _savedMeta, saved.isAcceptableValue(d.saved.value, _savedMeta));
+          _savedMeta, saved.isAcceptableOrUnknown(data['saved'], _savedMeta));
     }
-    if (d.databaseInfoId.present) {
+    if (data.containsKey('database_info_id')) {
       context.handle(
           _databaseInfoIdMeta,
-          databaseInfoId.isAcceptableValue(
-              d.databaseInfoId.value, _databaseInfoIdMeta));
+          databaseInfoId.isAcceptableOrUnknown(
+              data['database_info_id'], _databaseInfoIdMeta));
     }
-    if (d.lastExecution.present) {
+    if (data.containsKey('last_execution')) {
       context.handle(
           _lastExecutionMeta,
-          lastExecution.isAcceptableValue(
-              d.lastExecution.value, _lastExecutionMeta));
+          lastExecution.isAcceptableOrUnknown(
+              data['last_execution'], _lastExecutionMeta));
     }
-    if (d.createdAt.present) {
+    if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
-          createdAt.isAcceptableValue(d.createdAt.value, _createdAtMeta));
+          createdAt.isAcceptableOrUnknown(data['created_at'], _createdAtMeta));
     }
-    if (d.updatedAt.present) {
+    if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableValue(d.updatedAt.value, _updatedAtMeta));
+          updatedAt.isAcceptableOrUnknown(data['updated_at'], _updatedAtMeta));
     }
     return context;
   }
@@ -1388,34 +1646,6 @@ class $QuerySavedsTable extends QuerySaveds
   QuerySaved map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
     return QuerySaved.fromData(data, _db, prefix: effectivePrefix);
-  }
-
-  @override
-  Map<String, Variable> entityToSql(QuerySavedsCompanion d) {
-    final map = <String, Variable>{};
-    if (d.id.present) {
-      map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.query.present) {
-      map['query'] = Variable<String, StringType>(d.query.value);
-    }
-    if (d.saved.present) {
-      map['saved'] = Variable<bool, BoolType>(d.saved.value);
-    }
-    if (d.databaseInfoId.present) {
-      map['database_info_id'] = Variable<int, IntType>(d.databaseInfoId.value);
-    }
-    if (d.lastExecution.present) {
-      map['last_execution'] =
-          Variable<DateTime, DateTimeType>(d.lastExecution.value);
-    }
-    if (d.createdAt.present) {
-      map['created_at'] = Variable<DateTime, DateTimeType>(d.createdAt.value);
-    }
-    if (d.updatedAt.present) {
-      map['updated_at'] = Variable<DateTime, DateTimeType>(d.updatedAt.value);
-    }
-    return map;
   }
 
   @override

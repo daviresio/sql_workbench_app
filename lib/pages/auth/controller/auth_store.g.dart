@@ -6,66 +6,60 @@ part of 'auth_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AuthStore on _AuthStore, Store {
   final _$countryGeolocationAtom = Atom(name: '_AuthStore.countryGeolocation');
 
   @override
   String get countryGeolocation {
-    _$countryGeolocationAtom.context
-        .enforceReadPolicy(_$countryGeolocationAtom);
-    _$countryGeolocationAtom.reportObserved();
+    _$countryGeolocationAtom.reportRead();
     return super.countryGeolocation;
   }
 
   @override
   set countryGeolocation(String value) {
-    _$countryGeolocationAtom.context.conditionallyRunInAction(() {
+    _$countryGeolocationAtom.reportWrite(value, super.countryGeolocation, () {
       super.countryGeolocation = value;
-      _$countryGeolocationAtom.reportChanged();
-    }, _$countryGeolocationAtom, name: '${_$countryGeolocationAtom.name}_set');
+    });
   }
 
   final _$phoneNumberAtom = Atom(name: '_AuthStore.phoneNumber');
 
   @override
   String get phoneNumber {
-    _$phoneNumberAtom.context.enforceReadPolicy(_$phoneNumberAtom);
-    _$phoneNumberAtom.reportObserved();
+    _$phoneNumberAtom.reportRead();
     return super.phoneNumber;
   }
 
   @override
   set phoneNumber(String value) {
-    _$phoneNumberAtom.context.conditionallyRunInAction(() {
+    _$phoneNumberAtom.reportWrite(value, super.phoneNumber, () {
       super.phoneNumber = value;
-      _$phoneNumberAtom.reportChanged();
-    }, _$phoneNumberAtom, name: '${_$phoneNumberAtom.name}_set');
+    });
   }
 
   final _$smsCodeAtom = Atom(name: '_AuthStore.smsCode');
 
   @override
   String get smsCode {
-    _$smsCodeAtom.context.enforceReadPolicy(_$smsCodeAtom);
-    _$smsCodeAtom.reportObserved();
+    _$smsCodeAtom.reportRead();
     return super.smsCode;
   }
 
   @override
   set smsCode(String value) {
-    _$smsCodeAtom.context.conditionallyRunInAction(() {
+    _$smsCodeAtom.reportWrite(value, super.smsCode, () {
       super.smsCode = value;
-      _$smsCodeAtom.reportChanged();
-    }, _$smsCodeAtom, name: '${_$smsCodeAtom.name}_set');
+    });
   }
 
   final _$_AuthStoreActionController = ActionController(name: '_AuthStore');
 
   @override
   dynamic setCountryGeolocation(String value) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setCountryGeolocation');
     try {
       return super.setCountryGeolocation(value);
     } finally {
@@ -75,7 +69,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   dynamic setPhoneNumber(String value) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo = _$_AuthStoreActionController.startAction(
+        name: '_AuthStore.setPhoneNumber');
     try {
       return super.setPhoneNumber(value);
     } finally {
@@ -85,7 +80,8 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   dynamic setSmsCode(String value) {
-    final _$actionInfo = _$_AuthStoreActionController.startAction();
+    final _$actionInfo =
+        _$_AuthStoreActionController.startAction(name: '_AuthStore.setSmsCode');
     try {
       return super.setSmsCode(value);
     } finally {
@@ -95,8 +91,10 @@ mixin _$AuthStore on _AuthStore, Store {
 
   @override
   String toString() {
-    final string =
-        'countryGeolocation: ${countryGeolocation.toString()},phoneNumber: ${phoneNumber.toString()},smsCode: ${smsCode.toString()}';
-    return '{$string}';
+    return '''
+countryGeolocation: ${countryGeolocation},
+phoneNumber: ${phoneNumber},
+smsCode: ${smsCode}
+    ''';
   }
 }

@@ -6,24 +6,22 @@ part of 'favorite_store.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$FavoriteStore on _FavoriteStore, Store {
   final _$favoriteListAtom = Atom(name: '_FavoriteStore.favoriteList');
 
   @override
   List<dynamic> get favoriteList {
-    _$favoriteListAtom.context.enforceReadPolicy(_$favoriteListAtom);
-    _$favoriteListAtom.reportObserved();
+    _$favoriteListAtom.reportRead();
     return super.favoriteList;
   }
 
   @override
   set favoriteList(List<dynamic> value) {
-    _$favoriteListAtom.context.conditionallyRunInAction(() {
+    _$favoriteListAtom.reportWrite(value, super.favoriteList, () {
       super.favoriteList = value;
-      _$favoriteListAtom.reportChanged();
-    }, _$favoriteListAtom, name: '${_$favoriteListAtom.name}_set');
+    });
   }
 
   final _$_FavoriteStoreActionController =
@@ -31,7 +29,8 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   dynamic setFavoriteList(List<dynamic> value) {
-    final _$actionInfo = _$_FavoriteStoreActionController.startAction();
+    final _$actionInfo = _$_FavoriteStoreActionController.startAction(
+        name: '_FavoriteStore.setFavoriteList');
     try {
       return super.setFavoriteList(value);
     } finally {
@@ -41,7 +40,8 @@ mixin _$FavoriteStore on _FavoriteStore, Store {
 
   @override
   String toString() {
-    final string = 'favoriteList: ${favoriteList.toString()}';
-    return '{$string}';
+    return '''
+favoriteList: ${favoriteList}
+    ''';
   }
 }

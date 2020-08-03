@@ -7,5 +7,5 @@ part of 'database_info_dao.dart';
 // **************************************************************************
 
 mixin _$DatabaseInfoDaoMixin on DatabaseAccessor<Database> {
-  $DatabaseInfosTable get databaseInfos => db.databaseInfos;
+  $DatabaseInfosTable get databaseInfos => attachedDatabase.databaseInfos;
 }

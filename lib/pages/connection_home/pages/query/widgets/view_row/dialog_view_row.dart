@@ -162,7 +162,7 @@ class GetInput extends StatelessWidget {
             contentPadding: EdgeInsets.only(left: 2.0, bottom: 0, top: 0, right: 2.0),
           ),
           style: TextStyle(fontSize: 14.0, color: (enabled ? Colors.black : Colors.black54)),
-          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           keyboardType: TextInputType.number,
         );
         break;

@@ -57,9 +57,9 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                          decoration: TextFieldFormItemDecoraction('Name', IconsForMyApp.subtitles),
+                          decoration: textFieldFormItemDecoraction('Name', IconsForMyApp.subtitles),
                           onChanged: _controller.setName,
                           controller: _nameEditingController,
                         ),
@@ -86,42 +86,42 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
 //                        ),
 //                   ),
                     SizedBox(height: 20.0,),
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Hostname', IconsForMyApp.link_outline),
+                        decoration: textFieldFormItemDecoraction('Hostname', IconsForMyApp.link_outline),
                         onChanged: _controller.setHost,
                         controller: _hostNameEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Port', IconsForMyApp.export_outline),
+                        decoration: textFieldFormItemDecoraction('Port', IconsForMyApp.export_outline),
                         onChanged: _controller.setPort,
                         keyboardType: TextInputType.number,
                         controller: _portEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Database', IconsForMyApp.database),
+                        decoration: textFieldFormItemDecoraction('Database', IconsForMyApp.database),
                         onChanged: _controller.setDatabaseName,
                         controller: _databaseEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('User', IconsForMyApp.user),
+                        decoration: textFieldFormItemDecoraction('User', IconsForMyApp.user),
                         onChanged: _controller.setUser,
                         controller: _userEditingController,
                       ),
                     ),
                     SizedBox(height: 20.0,),
-                    ContainerFormItem(
+                    containerFormItem(
                       child: TextFormField(
-                        decoration: TextFieldFormItemDecoraction('Password', IconsForMyApp.key),
+                        decoration: textFieldFormItemDecoraction('Password', IconsForMyApp.key),
                         onChanged: _controller.setPassword,
                         controller: _passwordEditingController,
                         keyboardType: TextInputType.visiblePassword,
@@ -194,14 +194,14 @@ class _NewConnectionPageState extends State<NewConnectionPage> {
   }
 }
 
-InputDecoration TextFieldFormItemDecoraction(String label, IconData icon) {
+InputDecoration textFieldFormItemDecoraction(String label, IconData icon) {
   return InputDecoration(
     labelText: label,
     prefixIcon: Icon(icon, size: 20.0,),
   );
 }
 
-Widget ContainerFormItem({Widget child}) {
+Widget containerFormItem({Widget child}) {
   return Container(
       padding: EdgeInsets.only(bottom: 10.0, top: 10.0, left: 20.0, right: 20.0),
       decoration: BoxDecoration(

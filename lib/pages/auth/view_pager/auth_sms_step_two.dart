@@ -84,8 +84,9 @@ class _AuthSmsStepTwoState extends State<AuthSmsStepTwo> {
                   child: Column(
                     children: <Widget>[
                       PinCodeTextField(
+                        appContext: context,
                         length: 6,
-                        textInputType: TextInputType.number,
+                        keyboardType: TextInputType.number,
                         autoFocus: true,
                         focusNode: focusNode,
                         pinTheme: PinTheme(

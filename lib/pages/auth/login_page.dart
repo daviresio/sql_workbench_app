@@ -1,6 +1,5 @@
 import 'package:dbclientapp/pages/auth/auth_sms_page.dart';
 import 'package:dbclientapp/pages/connections/connections_page.dart';
-import 'package:dbclientapp/pages/initial_screen/initial_screen_page.dart';
 import 'package:flutter/material.dart';
 
 import 'service/base_auth.dart';

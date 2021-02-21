@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:dbclientapp/config/path_provider_config.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter/foundation.dart';
 import 'package:open_file/open_file.dart';
 
 const ANDROID_NOTIFICATION_DOWNLOAD_CHANEL_ID = '1';
@@ -25,7 +22,8 @@ class LocalNotificationConfig {
     var initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/launcher_icon');
 
     var initializationSettings = InitializationSettings(
-      initializationSettingsAndroid, null
+      android: initializationSettingsAndroid,
+      iOS: null,
     );
     flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: selectNotification);
   }
@@ -46,11 +44,12 @@ class LocalNotificationConfig {
   showNotification(String filename) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       ANDROID_NOTIFICATION_DOWNLOAD_CHANEL_ID, ANDROID_NOTIFICATION_DOWNLOAD_CHANEL_NAME, ANDROID_NOTIFICATION_DOWNLOAD_CHANEL_DESCRIPTION,
-      importance: Importance.Max, priority: Priority.High,
+      importance: Importance.high, priority: Priority.high,
     );
 
     var platformChannelSpecifics = NotificationDetails(
-      androidPlatformChannelSpecifics, null
+      android: androidPlatformChannelSpecifics,
+      iOS: null,
     );
 
     await flutterLocalNotificationsPlugin.show(0, 'Download Concluido!', 'Download file $filename was concluded!',

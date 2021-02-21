@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dbclientapp/database/database.dart';
 import 'package:dbclientapp/database/model/ConnectionWithInfo.dart';
 import 'package:dbclientapp/util/converter_util.dart';

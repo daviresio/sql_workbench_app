@@ -11,7 +11,7 @@ abstract class BaseAuth {
 
   Future<String> signUp(String email, String password);
 
-  Future<FirebaseUser> getCurrentUser();
+  Future<User> getCurrentUser();
 
   Future<void> sendEmailVerification();
 
@@ -34,7 +34,7 @@ class Auth implements BaseAuth {
       return user;
     };
 
-    final PhoneVerificationFailed verificationFailed = (AuthException authException) async {
+    final PhoneVerificationFailed verificationFailed = (FirebaseAuthException authException) async {
       getErrorToThrow(authException.message);
     };
 
@@ -62,33 +62,33 @@ class Auth implements BaseAuth {
 
   @override
   Future<String> anonimousSignIn() async {
-    AuthResult authResult = await FirebaseAuth.instance.signInAnonymously();
+    UserCredential authResult = await FirebaseAuth.instance.signInAnonymously();
     return authResult.user.uid;
   }
 
   @override
   Future<String> mailSignIn(String email, String password) async {
-    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+    UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
     );
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
   @override
   Future<String> signUp(String email, String password) async {
-    AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+    UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
   @override
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<User> getCurrentUser() async {
+    User user = _firebaseAuth.currentUser;
     return user;
   }
 
@@ -99,19 +99,19 @@ class Auth implements BaseAuth {
 
   @override
   Future<void> sendEmailVerification() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    User user = _firebaseAuth.currentUser;
     await user.sendEmailVerification();
   }
 
   @override
   Future<bool> isEmailVerified() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.isEmailVerified;
+    User user = _firebaseAuth.currentUser;
+    return user.emailVerified;
   }
 
   @override
   Future<bool> isLoged() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    User user = _firebaseAuth.currentUser;
     return user != null;
   }
 

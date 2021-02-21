@@ -16,11 +16,11 @@ Future<dynamic> showDialogDownloadResultQuery(
   DownloadResultStore _controller = DownloadResultStore();
 
   String _parseCsv() {
-    List<List<String>> csvStringList = List();
+    List<List<String>> csvStringList = [];
     csvStringList.add(Map<String, dynamic>.from(values[0]).keys.toList());
 
     values.forEach((v) {
-      List<String> valuesToCsv = List();
+      List<String> valuesToCsv = [];
       var row = Map<String, dynamic>.from(v);
       print(csvStringList[0].length);
       csvStringList[0].forEach((key) {

@@ -2,7 +2,7 @@ import 'package:dbclientapp/widgets/dialogs.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
-final String BASE_URL =
+const String BASE_URL =
     'https://gunylg6w17.execute-api.us-east-1.amazonaws.com/dev';
 //final String BASE_URL = 'http://10.0.3.2:3000/dev';
 

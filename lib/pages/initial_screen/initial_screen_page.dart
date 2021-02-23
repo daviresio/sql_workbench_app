@@ -1,7 +1,6 @@
 import 'package:dbclientapp/pages/auth/login_page.dart';
 import 'package:dbclientapp/pages/auth/service/base_auth.dart';
 import 'package:dbclientapp/pages/connections/connections_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class InitialScreenPage extends StatefulWidget {

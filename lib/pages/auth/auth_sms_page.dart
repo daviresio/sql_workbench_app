@@ -41,7 +41,7 @@ class _AuthSmsPageState extends State<AuthSmsPage> {
   void signin(String smsCode) async {
     try {
       AuthCredential authcredential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(authcredential);
+      await FirebaseAuth.instance.signInWithCredential(authcredential);
       Navigator.pushReplacementNamed(context, ConnectionsPage.routeName);
     } catch (e) {
       print(e.runtimeType);

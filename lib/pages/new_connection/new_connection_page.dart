@@ -7,7 +7,6 @@ import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
 import 'package:dbclientapp/widgets/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flushbar/flushbar.dart';
 
 
 class NewConnectionPage extends StatefulWidget {

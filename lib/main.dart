@@ -4,6 +4,7 @@ import 'package:dbclientapp/pages/connections/connections_page.dart';
 import 'package:dbclientapp/pages/initial_screen/initial_screen_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_page.dart';
 import 'package:dbclientapp/pages/new_connection/new_connection_store.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,11 @@ import 'pages/connection_home/pages/history/history_store.dart';
 import 'pages/connection_home/pages/favorite/favorite_store.dart';
 import 'pages/connection_home/connection_home_store.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();  
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

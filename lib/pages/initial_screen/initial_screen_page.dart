@@ -4,7 +4,6 @@ import 'package:dbclientapp/pages/connections/connections_page.dart';
 import 'package:flutter/material.dart';
 
 class InitialScreenPage extends StatefulWidget {
-
   static const String routeName = '/initial-screen';
 
   @override
@@ -12,16 +11,15 @@ class InitialScreenPage extends StatefulWidget {
 }
 
 class _InitialScreenPageState extends State<InitialScreenPage> {
-
   Future defineDirecton() async {
     BaseAuth auth = Auth();
     bool isLogged = await auth.isLoged();
 
-    if(isLogged) {
-      Navigator.of(context).pushReplacementNamed(ConnectionsPage.routeName);
-    } else {
-      Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-    }
+    // if(isLogged) {
+    Navigator.of(context).pushReplacementNamed(ConnectionsPage.routeName);
+    // } else {
+    //   Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+    // }
   }
 
   @override
@@ -38,5 +36,4 @@ class _InitialScreenPageState extends State<InitialScreenPage> {
       ),
     );
   }
-
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>64998542656-edldqggf4u4j76u73831cos2jrmseuij.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.64998542656-edldqggf4u4j76u73831cos2jrmseuij</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>64998542656-55ti9vij5mp5qng9ogsb1anc8tg9ljql.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBncI-oIgp-W3x7LYy6yegKeAN3eCg1mzo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>64998542656</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.resio.dbclientapp</string>
+	<key>PROJECT_ID</key>
+	<string>db-client-e1c7f</string>
+	<key>STORAGE_BUCKET</key>
+	<string>db-client-e1c7f.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:64998542656:ios:d710d7a4dd9a03ad167ea5</string>
+	<key>DATABASE_URL</key>
+	<string>https://db-client-e1c7f.firebaseio.com</string>
+</dict>
+</plist>

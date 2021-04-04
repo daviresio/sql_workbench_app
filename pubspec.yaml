@@ -34,7 +34,7 @@ dependencies:
   firebase_core: ^0.7.0
   firebase_analytics: ^7.0.1
   firebase_auth: ^0.20.1
-  firebase_crashlytics: ^0.4.0+1
+  # firebase_crashlytics: ^0.4.0+1
   flutter_datetime_picker: ^1.5.0
   intl_phone_number_input: ^0.6.0
   pin_code_fields: ^6.1.0
@@ -59,8 +59,9 @@ dev_dependencies:
 
 flutter_icons:
   android: "launcher_icon"
-  ios: false
-  image_path: "assets/icon/ic_launcher.png"
+  ios: true
+  image_path_android: "assets/icon/ic_android.png"
+  image_path_ios: "assets/icon/ic_ios.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
